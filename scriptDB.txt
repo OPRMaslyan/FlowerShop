@@ -1,0 +1,72 @@
+-- Пользователи системы
+CREATE TABLE Users (
+    Id SERIAL PRIMARY KEY,
+    Username VARCHAR(100) UNIQUE NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    Role VARCHAR(50) CHECK (Role IN ('Admin', 'Customer')) NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Категории цветов
+CREATE TABLE Categories (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Description TEXT
+);
+
+-- Цветы
+CREATE TABLE Flowers (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(200) NOT NULL,
+    Description TEXT,
+    Price DECIMAL(10, 2) NOT NULL,
+    StockQuantity INT NOT NULL,
+    CategoryId INT REFERENCES Categories(Id),
+    ImageUrl VARCHAR(500)
+);
+
+-- Заказы
+CREATE TABLE Orders (
+    Id SERIAL PRIMARY KEY,
+    UserId INT REFERENCES Users(Id),
+    OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    TotalAmount DECIMAL(10, 2) NOT NULL,
+    Status VARCHAR(50) DEFAULT 'Pending'
+);
+
+-- Элементы заказа
+CREATE TABLE OrderItems (
+    Id SERIAL PRIMARY KEY,
+    OrderId INT REFERENCES Orders(Id),
+    FlowerId INT REFERENCES Flowers(Id),
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(10, 2) NOT NULL
+);
+
+-- Доставка
+CREATE TABLE Deliveries (
+    Id SERIAL PRIMARY KEY,
+    OrderId INT REFERENCES Orders(Id),
+    Address TEXT NOT NULL,
+    DeliveryDate DATE,
+    Status VARCHAR(50) DEFAULT 'Processing'
+);
+
+-- Отзывы
+CREATE TABLE Reviews (
+    Id SERIAL PRIMARY KEY,
+    UserId INT REFERENCES Users(Id),
+    FlowerId INT REFERENCES Flowers(Id),
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    Comment TEXT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Корзина покупок
+CREATE TABLE CartItems (
+    Id SERIAL PRIMARY KEY,
+    UserId INT REFERENCES Users(Id),
+    FlowerId INT REFERENCES Flowers(Id),
+    Quantity INT NOT NULL DEFAULT 1
+);
