@@ -14,8 +14,7 @@ namespace FlowerShop.Pages
 
         private void BtnFlowers_Click(object sender, RoutedEventArgs e)
         {
-            // Пока заглушка — позже добавим каталог
-            MessageBox.Show("Каталог цветов будет здесь.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new FlowersCatalogPage());
         }
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
