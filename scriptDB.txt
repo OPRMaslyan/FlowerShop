@@ -70,3 +70,19 @@ CREATE TABLE CartItems (
     FlowerId INT REFERENCES Flowers(Id),
     Quantity INT NOT NULL DEFAULT 1
 );
+
+
+-- Добавление категорий (базовое)
+
+INSERT INTO Categories (Name, Description) VALUES
+('Розы', 'Классические розы разных сортов'),
+('Тюльпаны', 'Весенние тюльпаны'),
+('Орхидеи', 'Экзотические орхидеи');
+
+-- Добавление цветов (базовое)
+
+
+INSERT INTO Flowers (Name, Description, Price, StockQuantity, CategoryId, ImageUrl) VALUES
+('Красная роза', 'Символ любви и страсти', 250.00, 50, 1, 'https://krasnoslobodsk13.rosflower.ru/upload/cache/iblock/d0d/560_470_1/krasnye-rozy-gran-pri.jpg'),
+('Белый тюльпан', 'Элегантный весенний цветок', 180.00, 30, 2, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB6EjjLy2uVbfh_OrZ0rKsIxdAu-PBfHwZuA&s'),
+('Фаленопсис', 'Популярная орхидея для интерьера', 1200.00, 10, 3, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjlo2kBRC_YIIXcROqfkYODtHLY6-SqJQ4pg&s');

@@ -47,18 +47,19 @@
                                  Padding="15" 
                                  BorderBrush="LightGray" 
                                  BorderThickness="1" 
-                                 Margin="0,0,0,20"/>
+                                 Margin="0,0,0,20"
+                                 PreviewKeyDown="PBoxPassword_KeyDown"/>
 
                     <!-- Кнопка "Войти" -->
                     <Button x:Name="BtnLogin" 
-        Content="Войти" 
-        Click="BtnLogin_Click"
-        Height="50" 
-        FontSize="20" 
-        FontWeight="SemiBold"
-        Background="#E0E0E0" 
-        Foreground="Black" 
-        Margin="0,0,0,20">
+                        Content="Войти" 
+                        Click="BtnLogin_Click"
+                        Height="50" 
+                        FontSize="20" 
+                        FontWeight="SemiBold"
+                        Background="#E0E0E0" 
+                        Foreground="Black" 
+                        Margin="0,0,0,20">  
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="15">
