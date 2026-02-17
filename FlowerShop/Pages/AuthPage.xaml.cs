@@ -1,6 +1,7 @@
 ﻿using FlowerShop.Models;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace FlowerShop.Pages
@@ -14,7 +15,10 @@ namespace FlowerShop.Pages
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TBoxLogin.Text) || string.IsNullOrWhiteSpace(PBoxPassword.Password))
+            var username = TBoxLogin.Text.Trim();
+            var password = PBoxPassword.Password;
+
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 TxtError.Text = "Введите логин и пароль!";
                 TxtError.Visibility = Visibility.Visible;
@@ -23,8 +27,8 @@ namespace FlowerShop.Pages
 
             using (var context = new FlowerShopDbContext())
             {
-                var user = context.Users.FirstOrDefault(u => u.Username == TBoxLogin.Text);
-                if (user == null || user.Passwordhash != PBoxPassword.Password)
+                var user = context.Users.FirstOrDefault(u => u.Username == username);
+                if (user == null || user.Passwordhash != password)
                 {
                     TxtError.Text = "Неверный логин или пароль!";
                     TxtError.Visibility = Visibility.Visible;
@@ -33,6 +37,15 @@ namespace FlowerShop.Pages
 
                 App.CurrentUser = user;
                 NavigationService.Navigate(new MainMenuPage());
+            }
+        }
+
+        // Чтобы нельзя было вводить пробелы в поле пароля
+        private void PBoxPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true; // Игнорируем пробел
             }
         }
 

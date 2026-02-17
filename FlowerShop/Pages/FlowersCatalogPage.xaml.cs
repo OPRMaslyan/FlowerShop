@@ -50,7 +50,7 @@ namespace FlowerShop.Pages
 
         private void BtnAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Как нибудь потом", "Будущее", MessageBoxButton.OKCancel);
+            NavigationService.Navigate(new AboutPage());
         }
 
         private void BtnCart_Click(object sender, RoutedEventArgs e)
