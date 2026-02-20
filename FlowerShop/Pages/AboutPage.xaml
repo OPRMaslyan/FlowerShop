@@ -4,7 +4,6 @@
       xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
       Title="О нас" Height="800" Width="1000">
     <Grid>
-        <!-- Градиентный фон -->
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Color="#7FFF00" Offset="0"/>
@@ -12,66 +11,44 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
-                <!-- Левая часть: логотип -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
                     <TextBlock Text="🌸 Flower Shop" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <!-- Центр: навигация -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Каталог" 
-                Click="BtnCatalog_Click"
-                FontSize="16" 
-                Background="Transparent" 
-                BorderThickness="0" 
-                Padding="10" 
-                Margin="0,0,20,0"/>
-                    <Button Content="О нас" 
-                Click="BtnAbout_Click"
-                FontSize="16" 
-                Background="Transparent" 
-                BorderThickness="0" 
-                Padding="10"/>
+                    <Button Content="Каталог" Click="BtnCatalog_Click" FontSize="16" Background="Transparent" BorderThickness="0" Padding="10" Margin="0,0,20,0"/>
+                    <Button Content="О нас" Click="BtnAbout_Click" FontSize="16" Background="Transparent" BorderThickness="0" Padding="10"/>
                 </StackPanel>
 
-                <!-- Правая часть: корзина и профиль -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
                     <Button Content="🛒" FontSize="24" Background="Transparent" BorderThickness="0" Width="50" Height="50" Click="BtnCart_Click"/>
                     <Button Content="👤" FontSize="24" Background="Transparent" BorderThickness="0" Width="50" Height="50" Click="BtnProfile_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
-        <!-- Основной контент -->
+
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,60,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
-
-                <!-- Заголовок "О нас" -->
                 <TextBlock Text="О нас" FontSize="36" FontWeight="Bold" Foreground="Black" Margin="0,20,0,30"/>
 
-                <!-- Текст -->
                 <Border Background="White" CornerRadius="15" Padding="20" Width="700" Margin="0,0,0,40">
                     <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
                         «Наш цветочный магазин — это место, где пахнет счастьем. Мы с любовью подбираем каждый цветок, чтобы помочь вам поздравить близких, украсить дом или просто порадовать себя. Заходите за вдохновением и свежими красками! Мы всегда рады помочь с выбором.»
                     </TextBlock>
                 </Border>
 
-                <!-- Разделитель -->
                 <Rectangle Height="1" Fill="Gray" Margin="0,20,0,20"/>
 
-                <!-- Контакты -->
                 <TextBlock Text="Контакты и местоположение" FontSize="28" FontWeight="Bold" Foreground="Black" Margin="0,0,0,30"/>
 
-                <!-- Контакты и карта -->
                 <Grid Width="700">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Телефон и почта -->
                     <Border Grid.Column="0" Background="White" CornerRadius="15" Padding="15" Margin="0,0,10,0">
                         <StackPanel>
                             <TextBlock Text="Телефон" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
@@ -83,7 +60,6 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Адрес и карта -->
                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                         <Border Background="White" CornerRadius="8" Width="340" Height="300">
                             <wpf:WebView2 x:Name="WebViewMap" Margin="0" />

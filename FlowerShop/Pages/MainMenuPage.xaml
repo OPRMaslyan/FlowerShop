@@ -2,11 +2,42 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Главное меню" Height="800" Width="1000">
-    <Grid Background="White">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock x:Name="TxtWelcome" FontSize="28" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,30"/>
-            <Button Content="Каталог цветов" Click="BtnFlowers_Click" Width="200" Height="50" FontSize="18" Background="DarkGreen" Foreground="White" Margin="0,0,0,10"/>
-            <Button Content="Выйти" Click="BtnLogout_Click" Width="200" Height="50" FontSize="18" Background="LightGray" Foreground="Black" Margin="0,20,0,0"/>
+    <Grid Background="{StaticResource MainBackground}">
+
+        <!-- Верхняя панель -->
+        <Border Height="80" Background="White" VerticalAlignment="Top">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
+                    <TextBlock Text="🌸 Flower Shop" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="Каталог" Style="{StaticResource MenuButton}" Click="BtnCatalog_Click" Margin="0,0,20,0"/>
+                    <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
+                    <Button Content="🛒" Style="{StaticResource IconButton}" Click="BtnCart_Click" Margin="0,0,10,0"/>
+                    <Button Content="👤" Style="{StaticResource IconButton}" Click="BtnProfile_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Центральный контент -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0">
+
+            <Border Background="White" CornerRadius="20" Padding="40,30" Width="500" Margin="0,0,0,30">
+                <TextBlock x:Name="TxtWelcome" FontSize="28" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
+            </Border>
+
+            <Button Content="Каталог цветов" Style="{StaticResource GreenButton}" Width="250" Click="BtnFlowers_Click" Margin="0,0,0,15"/>
+
+            <StackPanel x:Name="AdminPanel" Visibility="Collapsed">
+                <Button Content="Добавить товар" Style="{StaticResource GreenButton}" Width="250" Click="BtnAddProduct_Click" Margin="0,0,0,15"/>
+                <Button Content="Клиенты" Style="{StaticResource GreenButton}" Width="250" Click="BtnClients_Click" Margin="0,0,0,15"/>
+            </StackPanel>
+
+            <Button Content="Выйти" Style="{StaticResource GrayButton}" Width="250" Click="BtnLogout_Click" Margin="0,20,0,0"/>
         </StackPanel>
     </Grid>
 </Page>

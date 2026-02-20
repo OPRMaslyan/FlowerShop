@@ -40,18 +40,16 @@ namespace FlowerShop.Pages
             }
         }
 
-        // Чтобы нельзя было вводить пробелы в поле пароля
         private void PBoxPassword_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space)
             {
-                e.Handled = true; // Игнорируем пробел
+                e.Handled = true;
             }
         }
 
         private void BtnRegister_Click(object sender, RoutedEventArgs e)
         {
-            // Пока не реализуем регистрацию — задача только на авторизацию
             MessageBox.Show("Регистрация временно недоступна.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
