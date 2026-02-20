@@ -1,14 +1,10 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
+using FlowerShop.Models;
 
-namespace FlowerShop;
-
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
-public partial class App : Application
+namespace FlowerShop
 {
-    public static Models.User? CurrentUser { get; set; }
+    public partial class App : Application
+    {
+        public static User? CurrentUser { get; set; }
+    }
 }
-

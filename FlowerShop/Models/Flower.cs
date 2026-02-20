@@ -30,9 +30,8 @@ public partial class Flower
     [Column("categoryid")]
     public int? Categoryid { get; set; }
 
-    [Column("imageurl")]
-    [StringLength(500)]
-    public string? Imageurl { get; set; }
+    [Column("imagedata")]
+    public byte[]? ImageData { get; set; }
 
     [InverseProperty("Flower")]
     public virtual ICollection<Cartitem> Cartitems { get; set; } = new List<Cartitem>();
