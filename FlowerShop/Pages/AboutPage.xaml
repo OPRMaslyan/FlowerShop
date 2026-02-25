@@ -3,14 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
       Title="О нас" Height="800" Width="1000">
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="#7FFF00" Offset="0"/>
-                <GradientStop Color="#50FFC0" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Background="{StaticResource MainBackground}">
 
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
@@ -18,20 +13,22 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Каталог" Click="BtnCatalog_Click" FontSize="16" Background="Transparent" BorderThickness="0" Padding="10" Margin="0,0,20,0"/>
-                    <Button Content="О нас" Click="BtnAbout_Click" FontSize="16" Background="Transparent" BorderThickness="0" Padding="10"/>
+                    <Button Content="Каталог" Style="{StaticResource MenuButton}" Click="BtnCatalog_Click" Margin="0,0,20,0"/>
+                    <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click" Margin="0,0,20,0"/>
+                    <Button Content="Меню" Style="{StaticResource MenuButton}" Click="BtnMenu_Click"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                    <Button Content="🛒" FontSize="24" Background="Transparent" BorderThickness="0" Width="50" Height="50" Click="BtnCart_Click"/>
-                    <Button Content="👤" FontSize="24" Background="Transparent" BorderThickness="0" Width="50" Height="50" Click="BtnProfile_Click"/>
+                    <Button Content="🛒" Style="{StaticResource IconButton}" Click="BtnCart_Click" Margin="0,0,10,0"/>
+                    <Button Content="👤" Style="{StaticResource IconButton}" Click="BtnProfile_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,60,0,0">
+        <!-- Контент -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
-                <TextBlock Text="О нас" FontSize="36" FontWeight="Bold" Foreground="Black" Margin="0,20,0,30"/>
+                <TextBlock Text="О нас" FontSize="36" FontWeight="Bold" Foreground="Black" Margin="0,20,0,30" TextAlignment="Center"/>
 
                 <Border Background="White" CornerRadius="15" Padding="20" Width="700" Margin="0,0,0,40">
                     <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
@@ -41,7 +38,7 @@
 
                 <Rectangle Height="1" Fill="Gray" Margin="0,20,0,20"/>
 
-                <TextBlock Text="Контакты и местоположение" FontSize="28" FontWeight="Bold" Foreground="Black" Margin="0,0,0,30"/>
+                <TextBlock Text="Контакты и местоположение" FontSize="28" FontWeight="Bold" Foreground="Black" Margin="0,0,0,30" TextAlignment="Center"/>
 
                 <Grid Width="700">
                     <Grid.ColumnDefinitions>
@@ -56,13 +53,13 @@
                             <TextBlock Text="Почта" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
                             <TextBlock Text="flowershop@gmail.com" FontSize="16" Margin="0,0,0,15"/>
                             <TextBlock Text="Наш адрес" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
-                            <TextBlock Text="г. Курск, Ул. Димитрова, д.31" FontSize="16" />
+                            <TextBlock Text="г. Курск, Ул. Димитрова, д.31" FontSize="16"/>
                         </StackPanel>
                     </Border>
 
                     <StackPanel Grid.Column="1" Margin="10,0,0,0">
                         <Border Background="White" CornerRadius="8" Width="340" Height="300">
-                            <wpf:WebView2 x:Name="WebViewMap" Margin="0" />
+                            <wpf:WebView2 x:Name="WebViewMap" Margin="0"/>
                         </Border>
                     </StackPanel>
                 </Grid>

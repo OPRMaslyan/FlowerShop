@@ -65,5 +65,10 @@ namespace FlowerShop.Pages
             App.CurrentUser = null;
             NavigationService.Navigate(new AuthPage());
         }
+
+        private void BtnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new MainMenuPage());
+        }
     }
 }

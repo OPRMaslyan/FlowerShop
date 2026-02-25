@@ -13,7 +13,8 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="Каталог" Style="{StaticResource MenuButton}" Click="BtnCatalog_Click" Margin="0,0,20,0"/>
-                    <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click"/>
+                    <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click" Margin="0,0,20,0"/>
+                    <Button Content="Меню" Style="{StaticResource MenuButton}" Click="BtnMenu_Click"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
