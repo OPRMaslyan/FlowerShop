@@ -4,6 +4,7 @@
         Title="Flower Shop" 
         Height="800" 
         Width="1000"
+        ResizeMode="CanMinimize"
         Icon="/Images/icon.ico">
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>

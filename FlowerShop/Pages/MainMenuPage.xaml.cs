@@ -52,7 +52,7 @@ namespace FlowerShop.Pages
 
         private void BtnAddProduct_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Добавление товара будет в Задаче 12", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new AdminAddFlowersPage());
         }
 
         private void BtnClients_Click(object sender, RoutedEventArgs e)

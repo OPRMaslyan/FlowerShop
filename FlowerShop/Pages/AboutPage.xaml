@@ -30,44 +30,42 @@
         </Border>
 
         <!-- Контент -->
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
-                <TextBlock Text="О нас" FontSize="36" FontWeight="Bold" Foreground="Black" Margin="0,20,0,30" TextAlignment="Center"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,80,0,0">
+            <TextBlock Text="О нас" FontSize="36" FontWeight="Bold" Foreground="Black" Margin="0,20,0,30" TextAlignment="Center"/>
 
-                <Border Background="White" CornerRadius="15" Padding="20" Width="700" Margin="0,0,0,40">
-                    <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
-                        «Наш цветочный магазин — это место, где пахнет счастьем. Мы с любовью подбираем каждый цветок, чтобы помочь вам поздравить близких, украсить дом или просто порадовать себя. Заходите за вдохновением и свежими красками! Мы всегда рады помочь с выбором.»
-                    </TextBlock>
+            <Border Background="White" CornerRadius="15" Padding="20" Width="700" Margin="0,0,0,10">
+                <TextBlock TextWrapping="Wrap" FontSize="16" TextAlignment="Center">
+                    «Наш цветочный магазин — это место, где пахнет счастьем. Мы с любовью подбираем каждый цветок, чтобы помочь вам поздравить близких, украсить дом или просто порадовать себя. Заходите за вдохновением и свежими красками! Мы всегда рады помочь с выбором.»
+                </TextBlock>
+            </Border>
+
+            <Rectangle Height="1" Fill="Gray" Margin="0,20,0,20"/>
+
+            <TextBlock Text="Контакты и местоположение" FontSize="28" FontWeight="Bold" Foreground="Black" Margin="0,0,0,30" TextAlignment="Center"/>
+
+            <Grid Width="700">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="White" CornerRadius="15" Padding="15" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Телефон" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="+7 990 898 77 56" FontSize="16" Margin="0,0,0,15"/>
+                        <TextBlock Text="Почта" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="flowershop@gmail.com" FontSize="16" Margin="0,0,0,15"/>
+                        <TextBlock Text="Наш адрес" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="г. Курск, Ул. Димитрова, д.31" FontSize="16"/>
+                    </StackPanel>
                 </Border>
 
-                <Rectangle Height="1" Fill="Gray" Margin="0,20,0,20"/>
-
-                <TextBlock Text="Контакты и местоположение" FontSize="28" FontWeight="Bold" Foreground="Black" Margin="0,0,0,30" TextAlignment="Center"/>
-
-                <Grid Width="700">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0" Background="White" CornerRadius="15" Padding="15" Margin="0,0,10,0">
-                        <StackPanel>
-                            <TextBlock Text="Телефон" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
-                            <TextBlock Text="+7 990 898 77 56" FontSize="16" Margin="0,0,0,15"/>
-                            <TextBlock Text="Почта" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
-                            <TextBlock Text="flowershop@gmail.com" FontSize="16" Margin="0,0,0,15"/>
-                            <TextBlock Text="Наш адрес" FontSize="16" FontWeight="Bold" Margin="0,0,0,8"/>
-                            <TextBlock Text="г. Курск, Ул. Димитрова, д.31" FontSize="16"/>
-                        </StackPanel>
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <Border Background="White" CornerRadius="8" Width="340" Height="300">
+                        <wpf:WebView2 x:Name="WebViewMap" Margin="0"/>
                     </Border>
-
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                        <Border Background="White" CornerRadius="8" Width="340" Height="300">
-                            <wpf:WebView2 x:Name="WebViewMap" Margin="0"/>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </ScrollViewer>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Page>
