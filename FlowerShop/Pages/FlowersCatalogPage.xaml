@@ -7,16 +7,20 @@
         <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
+                <!-- Логотип + Название слева -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
-                    <TextBlock Text="🌸 Flower Shop" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Image Source="/Images/logo.png" Height="40" Margin="0,0,10,0"/>
+                    <TextBlock Text="Flower Shop" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
 
+                <!-- Навигация в центре -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="Каталог" Style="{StaticResource MenuButton}" Click="BtnCatalog_Click" Margin="0,0,20,0"/>
                     <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click" Margin="0,0,20,0"/>
                     <Button Content="Меню" Style="{StaticResource MenuButton}" Click="BtnMenu_Click"/>
                 </StackPanel>
 
+                <!-- Иконки справа -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
                     <Button Content="🛒" Style="{StaticResource IconButton}" Click="BtnCart_Click" Margin="0,0,10,0"/>
                     <Button Content="👤" Style="{StaticResource IconButton}" Click="BtnProfile_Click"/>

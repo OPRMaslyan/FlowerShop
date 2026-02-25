@@ -6,13 +6,13 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
-        <!-- Градиент фона -->
+        <!-- Градиент фона (основной для всех страниц) -->
         <LinearGradientBrush x:Key="MainBackground" StartPoint="0,0" EndPoint="1,0">
             <GradientStop Color="#7FFF00" Offset="0"/>
             <GradientStop Color="#50FFC0" Offset="1"/>
         </LinearGradientBrush>
 
-        <!-- Основная кнопка: зелёная -->
+        <!-- Основная кнопка: зелёная (Войти, Купить, Добавить) -->
         <Style x:Key="GreenButton" TargetType="Button">
             <Setter Property="Background" Value="DarkGreen"/>
             <Setter Property="Foreground" Value="White"/>
@@ -36,7 +36,7 @@
             </Setter>
         </Style>
 
-        <!-- Второстепенная кнопка: серая -->
+        <!-- Второстепенная кнопка: серая (Выход, Отмена) -->
         <Style x:Key="GrayButton" TargetType="Button">
             <Setter Property="Background" Value="#999999"/>
             <Setter Property="Foreground" Value="White"/>
@@ -60,7 +60,7 @@
             </Setter>
         </Style>
 
-        <!-- Кнопка меню: прозрачная -->
+        <!-- Кнопка меню: прозрачная (навигация в шапке) -->
         <Style x:Key="MenuButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -84,7 +84,7 @@
             </Setter>
         </Style>
 
-        <!-- Кнопка-иконка -->
+        <!-- Кнопка-иконка: для корзины и профиля -->
         <Style x:Key="IconButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="FontSize" Value="24"/>
