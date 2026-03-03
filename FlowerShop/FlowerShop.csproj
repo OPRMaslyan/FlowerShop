@@ -16,6 +16,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Images\icon.ico" />
+		<None Remove="Images\logo.png" />
 		<None Remove="Images\no_photo.png" />
 		<None Remove="logo.png" />
 	</ItemGroup>
@@ -35,6 +37,12 @@
 
 	<ItemGroup>
 		<!-- ИСПРАВЛЕНО: Resource вместо None -->
+		<Resource Include="Images\icon.ico">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Images\logo.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="Images\no_photo.png">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

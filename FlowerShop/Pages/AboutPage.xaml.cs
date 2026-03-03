@@ -61,5 +61,10 @@ namespace FlowerShop.Pages
         {
             MessageBox.Show("Как нибудь потом", "Будущее", MessageBoxButton.OKCancel);
         }
+
+        private void BtnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new MainMenuPage());
+        }
     }
 }

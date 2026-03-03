@@ -1,33 +1,34 @@
-﻿using System.Windows;
+﻿using FlowerShop.Pages.AdminPanel;
+using System.Windows;
 using System.Windows.Controls;
+
 
 namespace FlowerShop.Pages
 {
-    public partial class MainMenuPage : Page
+    public partial class AdminPanelPage : Page
     {
-        public MainMenuPage()
+        public AdminPanelPage()
         {
             InitializeComponent();
-            LoadUserData();
+            LoadTxtBox();
         }
 
-        private void LoadUserData()
+        private void LoadTxtBox()
         {
-            TxtWelcome.Text = $"Добро пожаловать, {App.CurrentUser?.Username}!";
-
-            if (App.CurrentUser?.Role == "Admin")
-            {
-                AdminPanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                AdminPanel.Visibility = Visibility.Collapsed;
-            }
+            TxtAdmin.Text = $"Админ-панель";
         }
 
-        private void BtnFlowers_Click(object sender, RoutedEventArgs e)
+        private void BtnAdminFlowers_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new FlowersCatalogPage());
+            NavigationService.Navigate(new AdminFlowersPage());
+        }
+        private void BtnUsers_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Страница пользователи", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void BtnCategories_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Страница категории", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BtnCatalog_Click(object sender, RoutedEventArgs e)
@@ -52,7 +53,7 @@ namespace FlowerShop.Pages
 
         private void BtnAdminPanel_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new AdminPanelPage());
+            NavigationService.Navigate(new AdminAddFlowersPage());
         }
 
         private void BtnClients_Click(object sender, RoutedEventArgs e)
