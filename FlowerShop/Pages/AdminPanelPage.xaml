@@ -1,4 +1,4 @@
-﻿<Page x:Class="FlowerShop.Pages.MainMenuPage"
+﻿<Page x:Class="FlowerShop.Pages.AdminPanelPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Главное меню" Height="800" Width="1000">
@@ -32,14 +32,13 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0">
 
             <Border Background="White" CornerRadius="20" Padding="40,30" Width="500" Margin="0,0,0,30">
-                <TextBlock x:Name="TxtWelcome" FontSize="28" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
+                <TextBlock x:Name="TxtAdmin" FontSize="28" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
             </Border>
 
-            <Button Content="Каталог цветов" Style="{StaticResource GreenButton}" Width="250" Click="BtnFlowers_Click" Margin="0,0,0,15"/>
-
-            <StackPanel x:Name="AdminPanel" Visibility="Collapsed">
-                <Button Content="Админ-панель" Style="{StaticResource GreenButton}" Width="250" Click="BtnAdminPanel_Click" Margin="0,0,0,15"/>
-            </StackPanel>
+            <Button Content="Товары" Style="{StaticResource GreenButton}" Width="250" Click="BtnAdminFlowers_Click" Margin="0,0,0,15"/>
+            <Button Content="Пользователи" Style="{StaticResource GreenButton}" Width="250" Click="BtnUsers_Click" Margin="0,0,0,15"/>
+            <Button Content="Категории" Style="{StaticResource GreenButton}" Width="250" Click="BtnCategories_Click" Margin="0,0,0,15"/>
+            
 
             <Button Content="Выйти" Style="{StaticResource GrayButton}" Width="250" Click="BtnLogout_Click" Margin="0,20,0,0"/>
         </StackPanel>

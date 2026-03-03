@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-namespace FlowerShop.Pages
+namespace FlowerShop.Pages.AdminPanel
 {
     public partial class AdminAddFlowersPage : Page
     {
@@ -128,10 +128,12 @@ namespace FlowerShop.Pages
 
                     context.Flowers.Add(flower);
                     context.SaveChanges();
+
                 }
 
-                ShowSuccess("Товар успешно добавлен!");
+                MessageBox.Show("Товар успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 ClearForm();
+                NavigationService.Navigate(new AdminFlowersPage());
             }
             catch (Exception ex)
             {
@@ -174,13 +176,6 @@ namespace FlowerShop.Pages
             TxtError.Text = message;
             TxtError.Visibility = Visibility.Visible;
             TxtSuccess.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowSuccess(string message)
-        {
-            TxtSuccess.Text = message;
-            TxtSuccess.Visibility = Visibility.Visible;
-            TxtError.Visibility = Visibility.Collapsed;
         }
 
         private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
