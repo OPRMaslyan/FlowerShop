@@ -117,7 +117,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </WrapPanel>
-                <TextBlock x:Name="TxtNoResults" Text="😕 Ничего не найдено" FontSize="24" Foreground="Gray" TextAlignment="Center" Margin="0,50,0,0" Visibility="Collapsed"/>
+                <TextBlock x:Name="TxtNoResults" Text="Ничего не найдено" FontSize="24" Foreground="Gray" TextAlignment="Center" Margin="0,50,0,0" Visibility="Collapsed"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
