@@ -22,4 +22,10 @@ public partial class Category
 
     [InverseProperty("Category")]
     public virtual ICollection<Flower> Flowers { get; set; } = new List<Flower>();
+
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }

@@ -33,6 +33,63 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
                 <TextBlock Text="Каталог Цветы" FontSize="48" FontWeight="Bold" Foreground="Black" Margin="0,30,0,40" TextAlignment="Center"/>
 
+                <!-- Панель поиска и фильтра -->
+                <Border Background="White" CornerRadius="15" Padding="25" Width="850" Margin="0,0,0,30">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Поиск -->
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="🔍 Поиск" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBox x:Name="TBoxSearch" 
+                     Style="{StaticResource FilterTextBox}"
+                     TextChanged="TBoxSearch_TextChanged"/>
+                        </StackPanel>
+
+                        <!-- Категория -->
+                        <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                            <TextBlock Text="🏷️ Категория" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <ComboBox x:Name="ComboBoxCategories" 
+                                Style="{StaticResource FilterComboBox}"
+                                SelectionChanged="ComboBoxCategories_SelectionChanged" Width="202">             
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontSize="15"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Сортировка -->
+                        <StackPanel Grid.Column="2" Margin="10,0,10,0">
+                            <TextBlock Text="📊 Сортировка" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <ComboBox x:Name="ComboBoxSort" 
+                                  Style="{StaticResource FilterComboBox}"
+                                  SelectionChanged="ComboBoxSort_SelectionChanged">
+                                <ComboBoxItem Content="По умолчанию" Tag="default"/>
+                                <ComboBoxItem Content="Цена: по возрастанию" Tag="price_asc"/>
+                                <ComboBoxItem Content="Цена: по убыванию" Tag="price_desc"/>
+                                <ComboBoxItem Content="Название: А-Я" Tag="name_asc"/>
+                                <ComboBoxItem Content="Название: Я-А" Tag="name_desc"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Кнопка сброса -->
+                        <StackPanel Grid.Column="3" VerticalAlignment="Bottom" Margin="10,0,0,0">
+                            <TextBlock Text=" " FontSize="14" Margin="0,0,0,8"/>
+                            <Button Content="🔄 Сброс" 
+                    Style="{StaticResource ResetButton}" 
+                    Click="BtnReset_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+
                 <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,50">
                     <ItemsControl x:Name="ItemsControlFlowers">
                         <ItemsControl.ItemsPanel>
@@ -52,7 +109,7 @@
                                             <Run Text="Цена за шт: "/>
                                             <Run Text="{Binding Price, StringFormat={}{0:F2} ₽}" FontWeight="Bold"/>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Category.Name}" Foreground="Gray" Margin="0,5,0,10"/>
+                                        <TextBlock Text="{Binding CategoryName}" Foreground="Gray" Margin="0,5,0,10"/>
                                         <Button Content="В корзину" Click="BtnAddToCart_Click" Tag="{Binding Flower}" Width="270" Height="35" Background="DarkGreen" Foreground="White" FontWeight="Bold"/>
                                     </StackPanel>
                                 </Border>
@@ -60,6 +117,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </WrapPanel>
+                <TextBlock x:Name="TxtNoResults" Text="😕 Ничего не найдено" FontSize="24" Foreground="Gray" TextAlignment="Center" Margin="0,50,0,0" Visibility="Collapsed"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
