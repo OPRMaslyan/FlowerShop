@@ -45,7 +45,7 @@ namespace FlowerShop.Pages
 
         private void BtnProfile_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Профиль пока в разработке", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new ProfilePage());
         }
 
         private void BtnAdminPanel_Click(object sender, RoutedEventArgs e)
