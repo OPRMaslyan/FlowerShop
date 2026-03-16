@@ -10,31 +10,89 @@ using System.Windows.Media.Imaging;
 
 namespace FlowerShop.Pages.AdminPanel
 {
-    public partial class AdminAddFlowersPage : Page
+    public partial class AdminFlowerPage : Page
     {
+        private int? _flowerId;
         private byte[] _imageData;
+        private bool _imageChanged;
 
-        public AdminAddFlowersPage()
+        public AdminFlowerPage(int? flowerId = null)
         {
             InitializeComponent();
+            _flowerId = flowerId;
             LoadCategories();
+            LoadData();
         }
 
-        // Загрузка категорий из БД
-        private void LoadCategories()
+        // Загрузка данных при редактировании
+        private void LoadData()
         {
-            using (var context = new FlowerShopDbContext())
+            if (_flowerId.HasValue)
             {
-                var categories = context.Categories.ToList();
-                ComboBoxCategories.ItemsSource = categories;
-                ComboBoxCategories.DisplayMemberPath = "Name";
-                ComboBoxCategories.SelectedValuePath = "Id";
+                TxtTitle.Text = "Редактирование товара";
 
-                if (categories.Any())
+                using var context = new FlowerShopDbContext();
+                var flower = context.Flowers.Find(_flowerId.Value);
+
+                if (flower != null)
                 {
-                    ComboBoxCategories.SelectedIndex = 0;
+                    TBoxName.Text = flower.Name;
+                    TBoxDescription.Text = flower.Description;
+                    TBoxPrice.Text = flower.Price.ToString("F2");
+                    TBoxStock.Text = flower.Stockquantity.ToString();
+
+                    if (flower.Categoryid.HasValue)
+                    {
+                        ComboBoxCategories.SelectedValue = flower.Categoryid.Value;
+                    }
+
+                    if (flower.ImageData != null && flower.ImageData.Length > 0)
+                    {
+                        _imageData = flower.ImageData;
+                        ShowImagePreview(_imageData);
+                        TxtImageName.Text = "Текущее изображение";
+                    }
                 }
             }
+            else
+            {
+                TxtTitle.Text = "Добавление товара";
+            }
+
+            TBoxName.Focus();
+        }
+
+        // Загрузка категорий
+        private void LoadCategories()
+        {
+            using var context = new FlowerShopDbContext();
+            var categories = context.Categories.ToList();
+            ComboBoxCategories.ItemsSource = categories;
+            ComboBoxCategories.DisplayMemberPath = "Name";
+            ComboBoxCategories.SelectedValuePath = "Id";
+
+            if (categories.Any())
+            {
+                ComboBoxCategories.SelectedIndex = 0;
+            }
+        }
+
+        // Показ изображения в превью
+        private void ShowImagePreview(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0)
+            {
+                ImagePreview.Source = new BitmapImage(new Uri("pack://application:,,,/Images/no_photo.png"));
+                return;
+            }
+
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = new MemoryStream(imageData);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            ImagePreview.Source = bitmap;
         }
 
         // Выбор изображения
@@ -50,24 +108,15 @@ namespace FlowerShop.Pages.AdminPanel
             {
                 try
                 {
-                    // Чтение файла в байты
                     _imageData = File.ReadAllBytes(openFileDialog.FileName);
+                    _imageChanged = true;
 
-                    // Предпросмотр
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = new MemoryStream(_imageData);
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    bitmap.Freeze();
-                    ImagePreview.Source = bitmap;
-
-                    // Имя файла
+                    ShowImagePreview(_imageData);
                     TxtImageName.Text = Path.GetFileName(openFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка загрузки изображения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ShowError($"Ошибка загрузки изображения: {ex.Message}");
                 }
             }
         }
@@ -81,10 +130,11 @@ namespace FlowerShop.Pages.AdminPanel
         // Сохранение товара
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            // Проверка полей
+            // Валидация
             if (string.IsNullOrWhiteSpace(TBoxName.Text))
             {
                 ShowError("Введите название товара!");
+                TBoxName.Focus();
                 return;
             }
 
@@ -114,8 +164,31 @@ namespace FlowerShop.Pages.AdminPanel
 
             try
             {
-                using (var context = new FlowerShopDbContext())
+                using var context = new FlowerShopDbContext();
+
+                if (_flowerId.HasValue)
                 {
+                    // Редактирование
+                    var flower = context.Flowers.Find(_flowerId.Value);
+                    if (flower != null)
+                    {
+                        flower.Name = TBoxName.Text.Trim();
+                        flower.Description = TBoxDescription.Text.Trim();
+                        flower.Price = price;
+                        flower.Stockquantity = stock;
+                        flower.Categoryid = ((Category)ComboBoxCategories.SelectedItem).Id;
+
+                        if (_imageChanged && _imageData != null)
+                        {
+                            flower.ImageData = _imageData;
+                        }
+
+                        context.SaveChanges();
+                    }
+                }
+                else
+                {
+                    // Добавление
                     var flower = new Flower
                     {
                         Name = TBoxName.Text.Trim(),
@@ -123,35 +196,25 @@ namespace FlowerShop.Pages.AdminPanel
                         Price = price,
                         Stockquantity = stock,
                         Categoryid = ((Category)ComboBoxCategories.SelectedItem).Id,
-                        ImageData = _imageData ?? null
+                        ImageData = _imageData
                     };
 
                     context.Flowers.Add(flower);
                     context.SaveChanges();
-
                 }
 
-                MessageBox.Show("Товар успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                ClearForm();
+                MessageBox.Show(
+                    _flowerId.HasValue ? "Товар обновлён" : "Товар добавлен",
+                    "Успех",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
                 NavigationService.Navigate(new AdminFlowersPage());
             }
             catch (Exception ex)
             {
                 ShowError($"Ошибка сохранения: {ex.Message}");
             }
-        }
-
-        // Очистка формы
-        private void ClearForm()
-        {
-            TBoxName.Clear();
-            TBoxDescription.Clear();
-            TBoxPrice.Clear();
-            TBoxStock.Clear();
-            ImagePreview.Source = null;
-            _imageData = null;
-            TxtImageName.Text = "Файл не выбран";
-            ComboBoxCategories.SelectedIndex = 0;
         }
 
         // Отмена
@@ -167,7 +230,7 @@ namespace FlowerShop.Pages.AdminPanel
         private void BtnCart_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Корзина в разработке", "Информация");
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Профиль в разработке", "Информация");
 
-        // Показ ошибок/успеха
+        // Показать ошибку
         private void ShowError(string message)
         {
             TxtError.Text = message;
@@ -175,9 +238,6 @@ namespace FlowerShop.Pages.AdminPanel
             TxtSuccess.Visibility = Visibility.Collapsed;
         }
 
-        private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+        private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
     }
 }

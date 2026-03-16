@@ -116,16 +116,15 @@ namespace FlowerShop.Pages.AdminPanel
         // Добавить товар
         private void BtnAddFlower_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new AdminAddFlowersPage());
+            NavigationService.Navigate(new AdminFlowerPage());
         }
 
         // Редактировать товар
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is int flowerId)
+            if (sender is Button btn && btn.Tag is int flowerId)
             {
-                MessageBox.Show($"Редактирование товара ID: {flowerId}", "Информация");
-                
+                NavigationService.Navigate(new AdminFlowerPage(flowerId));
             }
         }
 

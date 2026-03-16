@@ -50,7 +50,7 @@ namespace FlowerShop.Pages
 
         private void BtnAdminPanel_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new AdminAddFlowersPage());
+            NavigationService.Navigate(new AdminFlowerPage());
         }
 
         private void BtnUsers_Click(object sender, RoutedEventArgs e)
