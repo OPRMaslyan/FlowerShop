@@ -22,13 +22,10 @@ namespace FlowerShop.Pages
         {
             NavigationService.Navigate(new AdminFlowersPage());
         }
-        private void BtnUsers_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Страница пользователи", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+
         private void BtnCategories_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Страница категории", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new AdminCategoriesPage());
         }
 
         private void BtnCatalog_Click(object sender, RoutedEventArgs e)
@@ -56,10 +53,12 @@ namespace FlowerShop.Pages
             NavigationService.Navigate(new AdminAddFlowersPage());
         }
 
-        private void BtnClients_Click(object sender, RoutedEventArgs e)
+        private void BtnUsers_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Просмотр клиентов будет в Задаче 19", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new AdminClientsPage());
         }
+
+        
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {

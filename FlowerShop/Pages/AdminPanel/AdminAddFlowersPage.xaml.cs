@@ -157,10 +157,7 @@ namespace FlowerShop.Pages.AdminPanel
         // Отмена
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Отменить изменения?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                NavigationService.Navigate(new MainMenuPage());
-            }
+            NavigationService.Navigate(new AdminFlowersPage());
         }
 
         // Навигация
