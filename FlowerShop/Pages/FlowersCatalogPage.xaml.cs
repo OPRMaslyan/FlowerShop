@@ -170,13 +170,55 @@ namespace FlowerShop.Pages
         // Навигация
         private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Товар добавлен в корзину", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (App.CurrentUser == null)
+            {
+                MessageBox.Show("Войдите в аккаунт", "Внимание",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (sender is Button btn && btn.Tag is Flower flower)
+            {
+                using var context = new FlowerShopDbContext();
+
+                var existingItem = context.Cartitems
+                    .FirstOrDefault(c => c.Userid == App.CurrentUser.Id && c.Flowerid == flower.Id);
+
+                if (existingItem != null)
+                {
+                    if (existingItem.Quantity < flower.Stockquantity)
+                    {
+                        existingItem.Quantity++;
+                        context.SaveChanges();
+                        MessageBox.Show("Количество увеличено", "Успех",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Недостаточно товара на складе", "Внимание",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    var cartItem = new Cartitem
+                    {
+                        Userid = App.CurrentUser.Id,
+                        Flowerid = flower.Id,
+                        Quantity = 1
+                    };
+                    context.Cartitems.Add(cartItem);
+                    context.SaveChanges();
+                    MessageBox.Show("Товар добавлен в корзину", "Успех",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
 
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
-        private void BtnCart_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Корзина в разработке", "Информация");
+        private void BtnCart_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new CartPage());
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 

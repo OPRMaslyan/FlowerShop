@@ -42,7 +42,7 @@ namespace FlowerShop.Pages
 
         private void BtnCart_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Корзина пока в разработке", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new CartPage());
         }
 
         private void BtnProfile_Click(object sender, RoutedEventArgs e)
@@ -53,11 +53,6 @@ namespace FlowerShop.Pages
         private void BtnAdminPanel_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminPanelPage());
-        }
-
-        private void BtnClients_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Просмотр клиентов будет в Задаче 19", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)

@@ -121,19 +121,16 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border x:Name="border" 
-                                Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="8">
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="8">
                             <ScrollViewer x:Name="PART_ContentHost" Margin="5,0"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter TargetName="border" Property="BorderBrush" Value="DarkGreen"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="2"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#999999"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -142,7 +139,7 @@
         </Style>
 
 
-            <!-- ComboBox для фильтров -->
+        <!-- ComboBox для фильтров -->
             <Style x:Key="FilterComboBox" TargetType="ComboBox">
                 <Setter Property="Height" Value="45"/>
                 <Setter Property="FontSize" Value="15"/>

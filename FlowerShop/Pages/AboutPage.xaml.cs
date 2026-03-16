@@ -54,7 +54,7 @@ namespace FlowerShop.Pages
 
         private void BtnCart_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Как нибудь потом", "Будущее", MessageBoxButton.OKCancel);
+            NavigationService.Navigate(new CartPage());
         }
 
         private void BtnProfile_Click(object sender, RoutedEventArgs e)

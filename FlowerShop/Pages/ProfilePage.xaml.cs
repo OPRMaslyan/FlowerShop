@@ -1,10 +1,11 @@
-﻿using BCrypt.Net;
-using FlowerShop.Models;
+﻿using FlowerShop.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;  
+using System.Windows.Media;
 
 namespace FlowerShop.Pages
 {
@@ -20,7 +21,6 @@ namespace FlowerShop.Pages
             LoadOrders();
         }
 
-        //Загрузка данных профиля
         private void LoadProfile()
         {
             _currentUser = App.CurrentUser;
@@ -33,33 +33,54 @@ namespace FlowerShop.Pages
             TBoxUsername.Text = _currentUser.Username;
             TBoxEmail.Text = _currentUser.Email;
             TBoxRole.Text = _currentUser.Role == "Admin" ? "Администратор" : "Покупатель";
-            TBoxCreatedAt.Text = _currentUser.Createdat?.ToString("dd.MM.yyyy HH:mm") ?? "—";
+
+            // 👇 Исправлено для DateTime?
+            TBoxCreatedAt.Text = _currentUser.Createdat.HasValue
+                ? _currentUser.Createdat.Value.ToString("dd.MM.yyyy HH:mm")
+                : "—";
         }
 
-        //Загрузка заказов
         private void LoadOrders()
         {
             using var context = new FlowerShopDbContext();
-            var orders = context.Orders
+
+            // Шаг 1: Загружаем заказы из БД
+            var ordersFromDb = context.Orders
                 .Where(o => o.Userid == _currentUser.Id)
-                .Select(o => new OrderDisplayItem
-                {
-                    Id = o.Id,
-                    OrderDate = o.Orderdate ?? DateTime.Now,
-                    TotalAmount = o.Totalamount,
-                    Status = o.Status == "Pending" ? "В обработке" :
-                             o.Status == "Completed" ? "Выполнен" :
-                             o.Status == "Cancelled" ? "Отменён" : o.Status,
-                    ItemsCount = context.Orderitems.Count(oi => oi.Orderid == o.Id)
-                })
-                .OrderByDescending(o => o.OrderDate)
                 .ToList();
 
-            DataGridOrders.ItemsSource = orders;
+            // Шаг 2: Обрабатываем в памяти
+            var orders = new List<OrderDisplayItem>();
+            foreach (var order in ordersFromDb)
+            {
+                var itemsCount = context.Orderitems.Count(oi => oi.Orderid == order.Id);
+
+                string statusText = order.Status == "Pending" ? "В обработке" :
+                                    order.Status == "Completed" ? "Выполнен" :
+                                    order.Status == "Cancelled" ? "Отменён" : order.Status;
+
+                Brush statusColor = order.Status == "Pending" ? Brushes.Orange :
+                                    order.Status == "Completed" ? Brushes.Green :
+                                    order.Status == "Cancelled" ? Brushes.Red : Brushes.Gray;
+
+                orders.Add(new OrderDisplayItem
+                {
+                    Id = order.Id,
+                    // 👇 Исправлено для DateTime?
+                    OrderDate = order.Orderdate.HasValue ? order.Orderdate.Value : DateTime.Now,
+                    TotalAmount = order.Totalamount,
+                    Status = statusText,
+                    StatusColor = statusColor,
+                    ItemsCount = itemsCount
+                });
+            }
+
+            // Шаг 3: Сортируем и отображаем
+            orders = orders.OrderByDescending(o => o.OrderDate).ToList();
+            ItemsControlOrders.ItemsSource = orders;
             TxtNoOrders.Visibility = orders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        //Редактирование
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             _isEditMode = true;
@@ -71,35 +92,15 @@ namespace FlowerShop.Pages
             TBoxUsername.Focus();
         }
 
-        //Сохранение
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             var email = TBoxEmail.Text.Trim();
             var username = TBoxUsername.Text.Trim();
 
-            if (string.IsNullOrEmpty(username))
-            {
-                ShowMessage("Введите логин!", true);
-                return;
-            }
-
-            if (username.Length < 3 || username.Length > 100)
-            {
-                ShowMessage("Логин должен быть от 3 до 100 символов!", true);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(email))
-            {
-                ShowMessage("Введите email!", true);
-                return;
-            }
-
-            if (!IsValidEmail(email))
-            {
-                ShowMessage("Некорректный email!", true);
-                return;
-            }
+            if (string.IsNullOrEmpty(username)) { ShowMessage("Введите логин!", true); TBoxUsername.Focus(); return; }
+            if (username.Length < 3 || username.Length > 100) { ShowMessage("Логин 3-100 символов!", true); return; }
+            if (string.IsNullOrEmpty(email)) { ShowMessage("Введите email!", true); TBoxEmail.Focus(); return; }
+            if (!IsValidEmail(email)) { ShowMessage("Некорректный email!", true); return; }
 
             try
             {
@@ -110,44 +111,36 @@ namespace FlowerShop.Pages
                     user.Username = username;
                     user.Email = email;
                     context.SaveChanges();
+                    _currentUser.Username = username;
                     _currentUser.Email = email;
                     App.CurrentUser = _currentUser;
                 }
-
                 _isEditMode = false;
                 TBoxEmail.IsEnabled = false;
+                TBoxUsername.IsEnabled = false;
                 BtnEdit.Visibility = Visibility.Visible;
                 BtnSave.Visibility = Visibility.Collapsed;
                 BtnCancel.Visibility = Visibility.Collapsed;
                 ShowMessage("Данные обновлены!", false);
             }
-            catch (Exception ex)
-            {
-                ShowMessage($"Ошибка: {ex.Message}", true);
-            }
+            catch (Exception ex) { ShowMessage($"Ошибка: {ex.Message}", true); }
         }
 
-        //Отмена
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             _isEditMode = false;
             TBoxEmail.IsEnabled = false;
+            TBoxUsername.IsEnabled = false;
             TBoxEmail.Text = _currentUser.Email;
+            TBoxUsername.Text = _currentUser.Username;
             BtnEdit.Visibility = Visibility.Visible;
             BtnSave.Visibility = Visibility.Collapsed;
             BtnCancel.Visibility = Visibility.Collapsed;
         }
 
-        //Удаление профиля
         private void BtnDeleteProfile_Click(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show(
-                "Вы уверены, что хотите удалить свой профиль?\nЭто действие нельзя отменить!",
-                "Подтверждение",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
+            if (MessageBox.Show("Удалить профиль?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 try
                 {
@@ -157,65 +150,54 @@ namespace FlowerShop.Pages
                     {
                         context.Users.Remove(user);
                         context.SaveChanges();
-
                         App.CurrentUser = null;
-                        MessageBox.Show("Профиль удалён", "Успех",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Профиль удалён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         NavigationService.Navigate(new AuthPage());
                     }
                 }
-                catch (Exception ex)
-                {
-                    ShowMessage($"Ошибка удаления: {ex.Message}", true);
-                }
+                catch (Exception ex) { ShowMessage($"Ошибка: {ex.Message}", true); }
             }
         }
 
-        //Выход
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             App.CurrentUser = null;
             NavigationService.Navigate(new AuthPage());
         }
 
-       
+        private void BtnOrderDetails_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int orderId)
+                MessageBox.Show($"Заказ #{orderId}\nДетали в разработке", "Информация");
+        }
 
-        //Навигация
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
-        private void BtnCart_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Корзина в разработке", "Информация");
+        private void BtnCart_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new CartPage());
         private void BtnProfile_Click(object sender, RoutedEventArgs e) { }
 
-        //Вспомогательные методы
         private void ShowMessage(string message, bool isError)
         {
             TxtMessage.Text = message;
-            TxtMessage.Foreground = isError ? Brushes.Red : Brushes.Green;  
+            TxtMessage.Foreground = isError ? Brushes.Red : Brushes.Green;
             TxtMessage.Visibility = Visibility.Visible;
         }
 
         private bool IsValidEmail(string email)
         {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
+            try { return new MailAddress(email).Address == email; }
+            catch { return false; }
         }
     }
 
-    //Класс для отображения заказа
     public class OrderDisplayItem
     {
         public int Id { get; set; }
-        public DateTime OrderDate { get; set; }  
+        public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string Status { get; set; }
+        public Brush StatusColor { get; set; }
         public int ItemsCount { get; set; }
     }
 }

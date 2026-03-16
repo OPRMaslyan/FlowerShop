@@ -40,7 +40,7 @@ namespace FlowerShop.Pages
 
         private void BtnCart_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Корзина пока в разработке", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new CartPage());
         }
 
         private void BtnProfile_Click(object sender, RoutedEventArgs e)
