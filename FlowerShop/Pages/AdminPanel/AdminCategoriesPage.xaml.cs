@@ -112,7 +112,7 @@ namespace FlowerShop.Pages.AdminPanel
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
         private void BtnCart_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Корзина в разработке", "Информация");
-        private void BtnProfile_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Профиль в разработке", "Информация");
+        private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
     // Вспомогательный класс для отображения категории

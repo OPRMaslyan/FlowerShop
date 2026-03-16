@@ -59,7 +59,7 @@ namespace FlowerShop.Pages
 
         private void BtnProfile_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Как нибудь потом", "Будущее", MessageBoxButton.OKCancel);
+            NavigationService.Navigate(new ProfilePage());
         }
 
         private void BtnMenu_Click(object sender, RoutedEventArgs e)

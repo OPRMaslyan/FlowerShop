@@ -28,7 +28,16 @@ namespace FlowerShop.Pages
             using (var context = new FlowerShopDbContext())
             {
                 var user = context.Users.FirstOrDefault(u => u.Username == username);
-                if (user == null || user.Passwordhash != password)
+
+                if (user == null)
+                {
+                    TxtError.Text = "Пользователь не найден!";
+                    TxtError.Visibility = Visibility.Visible;
+                    return;
+                }
+
+                // Проверка хэша пароля через BCrypt
+                if (!BCrypt.Net.BCrypt.Verify(password, user.Passwordhash))
                 {
                     TxtError.Text = "Неверный логин или пароль!";
                     TxtError.Visibility = Visibility.Visible;
@@ -50,7 +59,7 @@ namespace FlowerShop.Pages
 
         private void BtnRegister_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Регистрация временно недоступна.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigationService.Navigate(new RegisterPage());
         }
     }
 }
