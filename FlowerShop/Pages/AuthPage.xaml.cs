@@ -1,8 +1,9 @@
 ﻿using FlowerShop.Models;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
+using FlowerShop.Pages.AdminPanel;
 
 namespace FlowerShop.Pages
 {
@@ -11,6 +12,21 @@ namespace FlowerShop.Pages
         public AuthPage()
         {
             InitializeComponent();
+        }
+
+        private void TBoxLogin_TextChanged(object sender, TextChangedEventArgs e) { }
+
+        private void PBoxPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            TxtPasswordHint.Visibility = string.IsNullOrEmpty(PBoxPassword.Password)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+        }
+
+        private void PBoxPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space) e.Handled = true;
+            if (e.Key == Key.Enter) BtnLogin_Click(sender, e);
         }
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
@@ -25,36 +41,23 @@ namespace FlowerShop.Pages
                 return;
             }
 
-            using (var context = new FlowerShopDbContext())
+            using var context = new FlowerShopDbContext();
+            var user = context.Users.FirstOrDefault(u => u.Username == username);
+
+            // 👇 Исправлено: полный путь к методу Verify
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Passwordhash))
             {
-                var user = context.Users.FirstOrDefault(u => u.Username == username);
+                TxtError.Text = "Неверный логин или пароль!";
+                TxtError.Visibility = Visibility.Visible;
+                return;
+            }
 
-                if (user == null)
-                {
-                    TxtError.Text = "Пользователь не найден!";
-                    TxtError.Visibility = Visibility.Visible;
-                    return;
-                }
+            App.CurrentUser = user;
 
-                // Проверка хэша пароля через BCrypt
-                if (!BCrypt.Net.BCrypt.Verify(password, user.Passwordhash))
-                {
-                    TxtError.Text = "Неверный логин или пароль!";
-                    TxtError.Visibility = Visibility.Visible;
-                    return;
-                }
-
-                App.CurrentUser = user;
+            if (user.Role == "Admin" || user.Role == "admin")
+                NavigationService.Navigate(new AdminPanelPage());
+            else
                 NavigationService.Navigate(new MainMenuPage());
-            }
-        }
-
-        private void PBoxPassword_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
         }
 
         private void BtnRegister_Click(object sender, RoutedEventArgs e)

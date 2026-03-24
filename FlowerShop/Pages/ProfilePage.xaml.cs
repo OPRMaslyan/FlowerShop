@@ -168,7 +168,9 @@ namespace FlowerShop.Pages
         private void BtnOrderDetails_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int orderId)
-                MessageBox.Show($"Заказ #{orderId}\nДетали в разработке", "Информация");
+            {
+                NavigationService.Navigate(new OrderDetailsPage(orderId));
+            }
         }
 
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());

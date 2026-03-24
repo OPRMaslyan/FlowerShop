@@ -6,45 +6,66 @@
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <!-- Логотип (крупный для страницы входа) -->
+            <!--Логотип -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
                 <Image Source="/Images/logo.png" Height="60" Margin="0,0,10,0"/>
                 <TextBlock Text="Flower Shop" FontSize="36" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <!-- Заголовок "Авторизация" -->
+            <!--Заголовок -->
             <Border Background="White" CornerRadius="20" Padding="30,20" Width="600" Margin="0,0,0,30">
                 <TextBlock Text="Авторизация" FontSize="48" FontWeight="Bold" Foreground="Black" TextAlignment="Center"/>
             </Border>
 
-            <!-- Форма входа -->
+            <!--Форма входа -->
             <Border Background="White" CornerRadius="20" Padding="40" Width="600">
                 <StackPanel>
                     <TextBlock Text="Вход" FontSize="24" FontWeight="Medium" Foreground="Black" TextAlignment="Center" Margin="0,0,0,20"/>
 
-                    <TextBox x:Name="TBoxLogin" 
-                             Height="60" 
-                             FontSize="18" 
-                             Padding="15" 
-                             BorderBrush="LightGray" 
-                             BorderThickness="1" 
-                             Margin="0,0,0,20"/>
+                    <!--Логин -->
+                    <Grid Margin="0,0,0,20">
+                        <TextBox x:Name="TBoxLogin" 
+                                 Height="60" FontSize="18" Padding="15" 
+                                 BorderBrush="LightGray" BorderThickness="1"
+                                 TextChanged="TBoxLogin_TextChanged"/>
+                        <TextBlock Text="Логин" 
+                                   FontSize="18" Foreground="Gray" 
+                                   Margin="15,0,0,0" VerticalAlignment="Center"
+                                   IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=TBoxLogin}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
 
-                    <PasswordBox x:Name="PBoxPassword" 
-                                 Height="60" 
-                                 FontSize="18" 
-                                 Padding="15" 
-                                 BorderBrush="LightGray" 
-                                 BorderThickness="1" 
-                                 Margin="0,0,0,20"
-                                 PreviewKeyDown="PBoxPassword_KeyDown"/>
+                    <!--Пароль -->
+                    <Grid Margin="0,0,0,20">
+                        <PasswordBox x:Name="PBoxPassword" 
+                                     Height="60" FontSize="18" Padding="15" 
+                                     BorderBrush="LightGray" BorderThickness="1"
+                                     PasswordChanged="PBoxPassword_PasswordChanged"
+                                     PreviewKeyDown="PBoxPassword_KeyDown"/>
+                        <TextBlock x:Name="TxtPasswordHint" 
+                                   Text="Пароль" 
+                                   FontSize="18" Foreground="Gray" 
+                                   Margin="15,0,0,0" VerticalAlignment="Center"
+                                   IsHitTestVisible="False"/>
+                    </Grid>
 
+                    <!--Кнопки -->
                     <Button x:Name="BtnLogin" 
                             Content="Войти" 
                             Click="BtnLogin_Click"
                             Style="{StaticResource GreenButton}"
                             Width="500"
-                            Margin="0,0,0,20"/>
+                            Margin="0,0,0,15"/>
 
                     <Button x:Name="BtnRegister" 
                             Content="Новый Пользователь" 
@@ -54,7 +75,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Сообщение об ошибке -->
+            <!--Ошибка -->
             <TextBlock x:Name="TxtError" 
                        Foreground="Red" 
                        TextAlignment="Center" 
