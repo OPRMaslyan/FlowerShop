@@ -51,7 +51,7 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
-                                            <!--Верхняя строка: Номер, Дата, Клиент -->
+                                            <!--Верхняя строка: Номер, Дата, Клиент, Сумма -->
                                             <Grid Grid.Row="0" Margin="0,0,0,15">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="150"/>
@@ -91,7 +91,7 @@
                                                 </StackPanel>
                                             </Grid>
 
-                                            <!--Средняя строка: Статус и товары -->
+                                            <!--Средняя строка: Статус + Товары -->
                                             <Grid Grid.Row="1" Margin="0,0,0,15">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="250"/>
@@ -102,20 +102,19 @@
                                                 <StackPanel Grid.Column="0">
                                                     <TextBlock Text="Статус заказа" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
                                                     <ComboBox x:Name="ComboBoxStatus"
-                                                              SelectedValue="{Binding Status, Mode=TwoWay}"
-                                                              SelectedValuePath="Tag"
-                                                              SelectionChanged="ComboBoxStatus_SelectionChanged"
                                                               Tag="{Binding Id}"
-                                                              Width="240"
+                                                              Width="240" 
                                                               Height="40"
-                                                              FontSize="14"
-                                                              Padding="10,0">
-                                                        <ComboBoxItem Content="Ожидает оплаты" Tag="Pending" Background="#FFF3E0" Foreground="#E65100"/>
-                                                        <ComboBoxItem Content="Оплачен" Tag="Paid" Background="#E8F5E9" Foreground="#1B5E20"/>
-                                                        <ComboBoxItem Content="Обрабатывается" Tag="Processing" Background="#E3F2FD" Foreground="#0D47A1"/>
-                                                        <ComboBoxItem Content="Отправлен" Tag="Shipped" Background="#F3E5F5" Foreground="#4A148C"/>
-                                                        <ComboBoxItem Content="Доставлен" Tag="Delivered" Background="#E0F2F1" Foreground="#004D40"/>
-                                                        <ComboBoxItem Content="Отменён" Tag="Cancelled" Background="#FFEBEE" Foreground="#B71C1C"/>
+                                                              FontSize="14" 
+                                                              Padding="10,0"
+                                                              SelectionChanged="ComboBoxStatus_SelectionChanged"
+                                                              Loaded="ComboBoxStatus_Loaded">
+                                                        <ComboBoxItem Content="Ожидает оплаты" Tag="Pending"/>
+                                                        <ComboBoxItem Content="Оплачен" Tag="Paid"/>
+                                                        <ComboBoxItem Content="Обрабатывается" Tag="Processing"/>
+                                                        <ComboBoxItem Content="Отправлен" Tag="Shipped"/>
+                                                        <ComboBoxItem Content="Доставлен" Tag="Delivered"/>
+                                                        <ComboBoxItem Content="Отменён" Tag="Cancelled"/>
                                                     </ComboBox>
                                                 </StackPanel>
 

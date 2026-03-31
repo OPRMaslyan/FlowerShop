@@ -21,10 +21,7 @@ namespace FlowerShop.Pages.AdminPanel
         private void LoadOrders()
         {
             using var context = new FlowerShopDbContext();
-
-            var ordersFromDb = context.Orders
-                .Include(o => o.User)
-                .ToList();
+            var ordersFromDb = context.Orders.Include(o => o.User).ToList();
 
             _orders = new List<OrderDisplay>();
             foreach (var order in ordersFromDb)
@@ -44,7 +41,7 @@ namespace FlowerShop.Pages.AdminPanel
                     CustomerName = order.User?.Username ?? "Неизвестно",
                     CustomerPhone = order.User?.Email ?? "—",
                     TotalAmount = order.Totalamount,
-                    Status = order.Status,
+                    Status = order.Status ?? "Pending",
                     ItemsList = itemsList,
                     ItemsCount = items.Count
                 });
@@ -55,57 +52,33 @@ namespace FlowerShop.Pages.AdminPanel
             TxtNoOrders.Visibility = _orders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        // Устанавливаем выбранный статус при загрузке ComboBox
+        private void ComboBoxStatus_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is ComboBox comboBox &&
+                comboBox.DataContext is OrderDisplay order)
+            {
+                foreach (var item in comboBox.Items)
+                {
+                    if (item is ComboBoxItem comboBoxItem &&
+                        comboBoxItem.Tag?.ToString() == order.Status)
+                    {
+                        comboBox.SelectedItem = comboBoxItem;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Обработка смены статуса
         private void ComboBoxStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox &&
                 comboBox.Tag is int orderId &&
-                comboBox.SelectedValue is string newStatus)
+                comboBox.SelectedItem is ComboBoxItem selectedItem)
             {
-                try
-                {
-                    using var context = new FlowerShopDbContext();
-                    var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
-
-                    if (order != null)
-                    {
-                        order.Status = newStatus;
-                        context.SaveChanges();
-
-                        var orderDisplay = _orders.FirstOrDefault(o => o.Id == orderId);
-                        if (orderDisplay != null)
-                        {
-                            orderDisplay.Status = newStatus;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при изменении статуса: {ex.Message}",
-                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    LoadOrders();
-                }
-            }
-        }
-
-        private void BtnDetails_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int orderId)
-            {
-                MessageBox.Show($"Детали заказа #{orderId}\nВ разработке", "Информация");
-            }
-        }
-
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is int orderId)
-            {
-                var result = MessageBox.Show(
-                    $"Удалить заказ #{orderId}?\nЭто действие нельзя отменить!",
-                    "Подтверждение",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
+                var newStatus = selectedItem.Tag?.ToString();
+                if (!string.IsNullOrEmpty(newStatus))
                 {
                     try
                     {
@@ -114,20 +87,57 @@ namespace FlowerShop.Pages.AdminPanel
 
                         if (order != null)
                         {
-                            var orderItems = context.Orderitems.Where(oi => oi.Orderid == orderId).ToList();
-                            context.Orderitems.RemoveRange(orderItems);
-                            context.Orders.Remove(order);
+                            order.Status = newStatus;
                             context.SaveChanges();
 
-                            MessageBox.Show("Заказ удалён", "Успех",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-                            LoadOrders();
+                            var orderDisplay = _orders.FirstOrDefault(o => o.Id == orderId);
+                            if (orderDisplay != null)
+                            {
+                                orderDisplay.Status = newStatus;
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
                             MessageBoxButton.OK, MessageBoxImage.Error);
+                        LoadOrders();
+                    }
+                }
+            }
+        }
+
+        private void BtnDetails_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int orderId)
+            {
+                NavigationService.Navigate(new OrderDetailsPage(orderId));
+            }
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int orderId)
+            {
+                if (MessageBox.Show($"Удалить заказ #{orderId}?", "Подтверждение",
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using var context = new FlowerShopDbContext();
+                        var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
+                        if (order != null)
+                        {
+                            context.Orderitems.RemoveRange(context.Orderitems.Where(oi => oi.Orderid == orderId));
+                            context.Orders.Remove(order);
+                            context.SaveChanges();
+                            MessageBox.Show("Заказ удалён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                            LoadOrders();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }

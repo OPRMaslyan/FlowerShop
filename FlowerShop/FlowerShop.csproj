@@ -38,7 +38,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- ИСПРАВЛЕНО: Resource вместо None -->
 		<Resource Include="Images\icon.ico">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

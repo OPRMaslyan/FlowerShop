@@ -55,13 +55,28 @@ namespace FlowerShop.Pages
             {
                 var itemsCount = context.Orderitems.Count(oi => oi.Orderid == order.Id);
 
-                string statusText = order.Status == "Pending" ? "В обработке" :
-                                    order.Status == "Completed" ? "Выполнен" :
-                                    order.Status == "Cancelled" ? "Отменён" : order.Status;
+                string statusText = order.Status switch
+                {
+                    "Pending" => "Ожидает оплаты",
+                    "Paid" => "Оплачен",
+                    "Processing" => "В обработке",
+                    "Shipped" => "Отправлен",
+                    "Delivered" => "Доставлен",
+                    "Cancelled" => "Отменён",
+                    _ => order.Status
+                };
 
-                Brush statusColor = order.Status == "Pending" ? Brushes.Orange :
-                                    order.Status == "Completed" ? Brushes.Green :
-                                    order.Status == "Cancelled" ? Brushes.Red : Brushes.Gray;
+                // 👇 Исправлено: добавлены все цвета
+                Brush statusColor = order.Status switch
+                {
+                    "Pending" => Brushes.Orange,
+                    "Paid" => Brushes.Gray,
+                    "Processing" => Brushes.Orange,
+                    "Shipped" => Brushes.Purple,
+                    "Delivered" => Brushes.Green,
+                    "Cancelled" => Brushes.Red,
+                    _ => Brushes.Gray
+                };
 
                 orders.Add(new OrderDisplayItem
                 {
