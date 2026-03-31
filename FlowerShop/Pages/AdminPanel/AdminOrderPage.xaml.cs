@@ -1,0 +1,153 @@
+﻿using FlowerShop.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace FlowerShop.Pages.AdminPanel
+{
+    public partial class AdminOrdersPage : Page
+    {
+        private List<OrderDisplay> _orders;
+
+        public AdminOrdersPage()
+        {
+            InitializeComponent();
+            LoadOrders();
+        }
+
+        private void LoadOrders()
+        {
+            using var context = new FlowerShopDbContext();
+
+            var ordersFromDb = context.Orders
+                .Include(o => o.User)
+                .ToList();
+
+            _orders = new List<OrderDisplay>();
+            foreach (var order in ordersFromDb)
+            {
+                var items = context.Orderitems
+                    .Where(oi => oi.Orderid == order.Id)
+                    .Include(oi => oi.Flower)
+                    .ToList();
+
+                var itemsList = string.Join(", ", items.Select(i =>
+                    $"{i.Flower?.Name ?? "Удалён"} (×{i.Quantity})"));
+
+                _orders.Add(new OrderDisplay
+                {
+                    Id = order.Id,
+                    OrderDate = order.Orderdate ?? DateTime.Now,
+                    CustomerName = order.User?.Username ?? "Неизвестно",
+                    CustomerPhone = order.User?.Email ?? "—",
+                    TotalAmount = order.Totalamount,
+                    Status = order.Status,
+                    ItemsList = itemsList,
+                    ItemsCount = items.Count
+                });
+            }
+
+            _orders = _orders.OrderByDescending(o => o.OrderDate).ToList();
+            ItemsControlOrders.ItemsSource = _orders;
+            TxtNoOrders.Visibility = _orders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void ComboBoxStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox &&
+                comboBox.Tag is int orderId &&
+                comboBox.SelectedValue is string newStatus)
+            {
+                try
+                {
+                    using var context = new FlowerShopDbContext();
+                    var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
+
+                    if (order != null)
+                    {
+                        order.Status = newStatus;
+                        context.SaveChanges();
+
+                        var orderDisplay = _orders.FirstOrDefault(o => o.Id == orderId);
+                        if (orderDisplay != null)
+                        {
+                            orderDisplay.Status = newStatus;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при изменении статуса: {ex.Message}",
+                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    LoadOrders();
+                }
+            }
+        }
+
+        private void BtnDetails_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int orderId)
+            {
+                MessageBox.Show($"Детали заказа #{orderId}\nВ разработке", "Информация");
+            }
+        }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int orderId)
+            {
+                var result = MessageBox.Show(
+                    $"Удалить заказ #{orderId}?\nЭто действие нельзя отменить!",
+                    "Подтверждение",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using var context = new FlowerShopDbContext();
+                        var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
+
+                        if (order != null)
+                        {
+                            var orderItems = context.Orderitems.Where(oi => oi.Orderid == orderId).ToList();
+                            context.Orderitems.RemoveRange(orderItems);
+                            context.Orders.Remove(order);
+                            context.SaveChanges();
+
+                            MessageBox.Show("Заказ удалён", "Успех",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+                            LoadOrders();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void BtnDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AdminPanelPage());
+        }
+    }
+
+    public class OrderDisplay
+    {
+        public int Id { get; set; }
+        public DateTime OrderDate { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerPhone { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Status { get; set; }
+        public string ItemsList { get; set; }
+        public int ItemsCount { get; set; }
+    }
+}

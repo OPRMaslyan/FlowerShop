@@ -147,7 +147,7 @@ namespace FlowerShop.Pages
                         Userid = App.CurrentUser.Id,
                         Orderdate = DateTime.Now,
                         Totalamount = total,
-                        Status = "Pending"
+                        Status = "Pending"  // 👈 Статус "Ожидает оплаты"
                     };
 
                     context.Orders.Add(order);
@@ -175,10 +175,8 @@ namespace FlowerShop.Pages
                     context.Cartitems.RemoveRange(cartItems);
                     context.SaveChanges();
 
-                    MessageBox.Show($"Заказ #{order.Id} оформлен!\nСумма: {total:F2} ₽", "Успех",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    NavigationService.Navigate(new ProfilePage());
+                    // 👇 Переход на оплату вместо профиля
+                    NavigationService.Navigate(new PaymentPage(order.Id, total));
                 }
                 catch (Exception ex)
                 {

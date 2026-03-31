@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-
 namespace FlowerShop.Pages
 {
     public partial class AdminPanelPage : Page
@@ -18,6 +17,12 @@ namespace FlowerShop.Pages
             TxtAdmin.Text = $"Админ-панель";
         }
 
+        // 👇 Новая кнопка: Заказы
+        private void BtnOrders_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AdminOrdersPage());
+        }
+
         private void BtnAdminFlowers_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminFlowersPage());
@@ -26,6 +31,11 @@ namespace FlowerShop.Pages
         private void BtnCategories_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminCategoriesPage());
+        }
+
+        private void BtnUsers_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AdminClientsPage());
         }
 
         private void BtnCatalog_Click(object sender, RoutedEventArgs e)
@@ -48,27 +58,15 @@ namespace FlowerShop.Pages
             NavigationService.Navigate(new ProfilePage());
         }
 
-        private void BtnAdminPanel_Click(object sender, RoutedEventArgs e)
+        private void BtnMenu_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new AdminFlowerPage());
+            NavigationService.Navigate(new MainMenuPage());
         }
-
-        private void BtnUsers_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new AdminClientsPage());
-        }
-
-        
 
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             App.CurrentUser = null;
             NavigationService.Navigate(new AuthPage());
-        }
-
-        private void BtnMenu_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new MainMenuPage());
         }
     }
 }
