@@ -14,6 +14,7 @@ namespace FlowerShop.Pages
         private bool _isEditMode;
         private User _currentUser;
 
+        // Конструктор страницы
         public ProfilePage()
         {
             InitializeComponent();
@@ -21,6 +22,7 @@ namespace FlowerShop.Pages
             LoadOrders();
         }
 
+        // Загрузка данных профиля
         private void LoadProfile()
         {
             _currentUser = App.CurrentUser;
@@ -34,22 +36,20 @@ namespace FlowerShop.Pages
             TBoxEmail.Text = _currentUser.Email;
             TBoxRole.Text = _currentUser.Role == "Admin" ? "Администратор" : "Покупатель";
 
-            // 👇 Исправлено для DateTime?
             TBoxCreatedAt.Text = _currentUser.Createdat.HasValue
                 ? _currentUser.Createdat.Value.ToString("dd.MM.yyyy HH:mm")
                 : "—";
         }
 
+        // Загрузка заказов пользователя
         private void LoadOrders()
         {
             using var context = new FlowerShopDbContext();
 
-            // Шаг 1: Загружаем заказы из БД
             var ordersFromDb = context.Orders
                 .Where(o => o.Userid == _currentUser.Id)
                 .ToList();
 
-            // Шаг 2: Обрабатываем в памяти
             var orders = new List<OrderDisplayItem>();
             foreach (var order in ordersFromDb)
             {
@@ -66,7 +66,6 @@ namespace FlowerShop.Pages
                     _ => order.Status
                 };
 
-                // 👇 Исправлено: добавлены все цвета
                 Brush statusColor = order.Status switch
                 {
                     "Pending" => Brushes.Orange,
@@ -81,7 +80,6 @@ namespace FlowerShop.Pages
                 orders.Add(new OrderDisplayItem
                 {
                     Id = order.Id,
-                    // 👇 Исправлено для DateTime?
                     OrderDate = order.Orderdate.HasValue ? order.Orderdate.Value : DateTime.Now,
                     TotalAmount = order.Totalamount,
                     Status = statusText,
@@ -90,12 +88,12 @@ namespace FlowerShop.Pages
                 });
             }
 
-            // Шаг 3: Сортируем и отображаем
             orders = orders.OrderByDescending(o => o.OrderDate).ToList();
             ItemsControlOrders.ItemsSource = orders;
             TxtNoOrders.Visibility = orders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        // Включение режима редактирования
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             _isEditMode = true;
@@ -107,15 +105,16 @@ namespace FlowerShop.Pages
             TBoxUsername.Focus();
         }
 
+        // Сохранение изменений профиля
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             var email = TBoxEmail.Text.Trim();
             var username = TBoxUsername.Text.Trim();
 
-            if (string.IsNullOrEmpty(username)) { ShowMessage("Введите логин!", true); TBoxUsername.Focus(); return; }
-            if (username.Length < 3 || username.Length > 100) { ShowMessage("Логин 3-100 символов!", true); return; }
-            if (string.IsNullOrEmpty(email)) { ShowMessage("Введите email!", true); TBoxEmail.Focus(); return; }
-            if (!IsValidEmail(email)) { ShowMessage("Некорректный email!", true); return; }
+            if (string.IsNullOrEmpty(username)) { ShowMessage("Введите логин", true); TBoxUsername.Focus(); return; }
+            if (username.Length < 3 || username.Length > 100) { ShowMessage("Логин от 3 до 100 символов", true); return; }
+            if (string.IsNullOrEmpty(email)) { ShowMessage("Введите email", true); TBoxEmail.Focus(); return; }
+            if (!IsValidEmail(email)) { ShowMessage("Некорректный email", true); return; }
 
             try
             {
@@ -136,11 +135,12 @@ namespace FlowerShop.Pages
                 BtnEdit.Visibility = Visibility.Visible;
                 BtnSave.Visibility = Visibility.Collapsed;
                 BtnCancel.Visibility = Visibility.Collapsed;
-                ShowMessage("Данные обновлены!", false);
+                ShowMessage("Данные обновлены", false);
             }
             catch (Exception ex) { ShowMessage($"Ошибка: {ex.Message}", true); }
         }
 
+        // Отмена редактирования
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             _isEditMode = false;
@@ -153,6 +153,7 @@ namespace FlowerShop.Pages
             BtnCancel.Visibility = Visibility.Collapsed;
         }
 
+        // Удаление профиля с каскадным удалением связанных записей
         private void BtnDeleteProfile_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Удалить профиль?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -163,8 +164,33 @@ namespace FlowerShop.Pages
                     var user = context.Users.Find(_currentUser.Id);
                     if (user != null)
                     {
+                        // Удаляем отзывы
+                        var reviews = context.Reviews.Where(r => r.Userid == _currentUser.Id).ToList();
+                        context.Reviews.RemoveRange(reviews);
+
+                        // Удаляем корзину
+                        var cartItems = context.Cartitems.Where(c => c.Userid == _currentUser.Id).ToList();
+                        context.Cartitems.RemoveRange(cartItems);
+
+                        // Удаляем заказы и их позиции
+                        var orders = context.Orders.Where(o => o.Userid == _currentUser.Id).ToList();
+                        foreach (var order in orders)
+                        {
+                            var orderItems = context.Orderitems.Where(oi => oi.Orderid == order.Id).ToList();
+                            context.Orderitems.RemoveRange(orderItems);
+
+                            var delivery = context.Deliveries.FirstOrDefault(d => d.Orderid == order.Id);
+                            if (delivery != null)
+                            {
+                                context.Deliveries.Remove(delivery);
+                            }
+                        }
+                        context.Orders.RemoveRange(orders);
+
+                        // Удаляем пользователя
                         context.Users.Remove(user);
                         context.SaveChanges();
+
                         App.CurrentUser = null;
                         MessageBox.Show("Профиль удалён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         NavigationService.Navigate(new AuthPage());
@@ -174,12 +200,14 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Выход из аккаунта
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             App.CurrentUser = null;
             NavigationService.Navigate(new AuthPage());
         }
 
+        // Переход к деталям заказа
         private void BtnOrderDetails_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int orderId)
@@ -188,12 +216,14 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
         private void BtnCart_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new CartPage());
         private void BtnProfile_Click(object sender, RoutedEventArgs e) { }
 
+        // Показ сообщения пользователю
         private void ShowMessage(string message, bool isError)
         {
             TxtMessage.Text = message;
@@ -201,6 +231,7 @@ namespace FlowerShop.Pages
             TxtMessage.Visibility = Visibility.Visible;
         }
 
+        // Проверка корректности email
         private bool IsValidEmail(string email)
         {
             try { return new MailAddress(email).Address == email; }
@@ -208,6 +239,7 @@ namespace FlowerShop.Pages
         }
     }
 
+    // Класс для отображения заказа в профиле
     public class OrderDisplayItem
     {
         public int Id { get; set; }

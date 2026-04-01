@@ -4,7 +4,7 @@
       Title="Корзина" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        <!--Верхняя панель -->
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
@@ -25,19 +25,19 @@
             </Grid>
         </Border>
 
-        <!--Контент -->
+        <!-- Контент -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
 
-                <!--Заголовок -->
-                <TextBlock Text="🛒 Корзина" 
+                <!-- Заголовок -->
+                <TextBlock Text="Корзина" 
                            FontSize="36" 
                            FontWeight="Bold" 
                            Foreground="Black" 
                            Margin="0,30,0,30" 
                            TextAlignment="Center"/>
 
-                <!--Список товаров -->
+                <!-- Список товаров -->
                 <ItemsControl x:Name="ItemsControlCart">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -53,7 +53,7 @@
                                         <ColumnDefinition Width="200"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!--Товар -->
+                                    <!-- Товар -->
                                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding FlowerName}" 
                                                    FontSize="18" 
@@ -64,7 +64,7 @@
                                                    FontSize="14"/>
                                     </StackPanel>
 
-                                    <!--Количество -->
+                                    <!-- Количество -->
                                     <StackPanel Grid.Column="1" 
                                                 Orientation="Horizontal" 
                                                 HorizontalAlignment="Center"
@@ -90,7 +90,7 @@
                                                 Click="BtnIncrease_Click"/>
                                     </StackPanel>
 
-                                    <!--Сумма и удалить -->
+                                    <!-- Сумма и удалить -->
                                     <StackPanel Grid.Column="2" 
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center">
@@ -100,11 +100,11 @@
                                                    Foreground="DarkGreen"
                                                    HorizontalAlignment="Right"
                                                    Margin="0,0,0,5"/>
-                                        <Button Content="🗑️ Удалить" 
-                                                Style="{StaticResource GrayButton}"
-                                                FontSize="12"
+                                        <Button Content="🗑️" 
+                                                Style="{StaticResource IconButton}"
+                                                FontSize="14"
                                                 Height="35"
-                                                Width="120"
+                                                Width="45"
                                                 Tag="{Binding Id}"
                                                 Click="BtnRemove_Click"/>
                                     </StackPanel>
@@ -114,7 +114,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <!--Пустая корзина -->
+                <!-- Пустая корзина -->
                 <TextBlock x:Name="TxtEmptyCart" 
                            Text="Корзина пуста" 
                            FontSize="24" 
@@ -123,7 +123,7 @@
                            Margin="0,50,0,0"
                            Visibility="Collapsed"/>
 
-                <!--Итого -->
+                <!-- Итого -->
                 <Border Background="White" 
                         CornerRadius="20" 
                         Padding="30" 
@@ -143,7 +143,7 @@
                                        Foreground="DarkGreen"/>
                         </StackPanel>
                         <Button Grid.Column="1" 
-                                Content="📦 Оформить заказ" 
+                                Content="Оформить заказ" 
                                 Style="{StaticResource GreenButton}"
                                 Width="250"
                                 VerticalAlignment="Center"

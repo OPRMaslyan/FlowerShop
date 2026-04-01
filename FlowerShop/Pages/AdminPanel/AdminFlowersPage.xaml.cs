@@ -12,16 +12,16 @@ namespace FlowerShop.Pages.AdminPanel
 {
     public partial class AdminFlowersPage : Page
     {
-        //Поле для хранения исходного списка товаров
         private List<AdminFlowerItem> _allFlowers;
 
+        // Конструктор страницы
         public AdminFlowersPage()
         {
             InitializeComponent();
             LoadFlowers();
         }
 
-        //Загрузка всех товаров
+        // Загрузка всех товаров из базы данных
         private void LoadFlowers()
         {
             using var context = new FlowerShopDbContext();
@@ -45,10 +45,10 @@ namespace FlowerShop.Pages.AdminPanel
             }
 
             ComboBoxSort.SelectedIndex = 0;
-
             ApplyFilters();
         }
 
+        // Конвертация byte[] в BitmapImage
         private BitmapImage ConvertImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0)
@@ -86,26 +86,28 @@ namespace FlowerShop.Pages.AdminPanel
                     "price_asc" => filtered.OrderBy(f => f.Price),
                     "price_desc" => filtered.OrderByDescending(f => f.Price),
                     "stock_desc" => filtered.OrderByDescending(f => f.Stockquantity),
-                    _ => filtered.OrderBy(f => f.Id) // default: по ID как при загрузке
+                    _ => filtered.OrderBy(f => f.Id)
                 };
             }
 
             var resultList = filtered.ToList();
-
             ItemsControlFlowers.ItemsSource = resultList;
             TxtNoResults.Visibility = resultList.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        // Обработчик изменения текста поиска
         private void TBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             ApplyFilters();
         }
 
+        // Обработчик изменения сортировки
         private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ApplyFilters();
         }
 
+        // Сброс фильтров
         private void BtnReset_Click(object sender, RoutedEventArgs e)
         {
             TBoxSearch.Clear();
@@ -113,13 +115,13 @@ namespace FlowerShop.Pages.AdminPanel
             ApplyFilters();
         }
 
-        // Добавить товар
+        // Переход к добавлению товара
         private void BtnAddFlower_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminFlowerPage());
         }
 
-        // Редактировать товар
+        // Переход к редактированию товара
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int flowerId)
@@ -128,7 +130,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Удалить товар
+        // Удаление товара с каскадным удалением связанных записей
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Tag is int flowerId)
@@ -147,14 +149,26 @@ namespace FlowerShop.Pages.AdminPanel
                         var flower = context.Flowers.Find(flowerId);
                         if (flower != null)
                         {
+                            // Удаляем из корзины всех пользователей
+                            var cartItems = context.Cartitems.Where(c => c.Flowerid == flowerId).ToList();
+                            context.Cartitems.RemoveRange(cartItems);
+
+                            // Удаляем из позиций заказов (в заказах останется запись о удалённом товаре)
+                            var orderItems = context.Orderitems.Where(oi => oi.Flowerid == flowerId).ToList();
+                            context.Orderitems.RemoveRange(orderItems);
+
+                            // Удаляем отзывы о товаре
+                            var reviews = context.Reviews.Where(r => r.Flowerid == flowerId).ToList();
+                            context.Reviews.RemoveRange(reviews);
+
+                            // Удаляем товар
                             context.Flowers.Remove(flower);
                             context.SaveChanges();
-
 
                             _allFlowers.RemoveAll(f => f.Id == flowerId);
                             ApplyFilters();
 
-                            MessageBox.Show("Товар успешно удалён!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Товар успешно удалён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                     catch (Exception ex)
@@ -165,7 +179,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Навигация
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());

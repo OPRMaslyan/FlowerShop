@@ -5,12 +5,14 @@ namespace FlowerShop.Pages
 {
     public partial class MainMenuPage : Page
     {
+        // Конструктор страницы
         public MainMenuPage()
         {
             InitializeComponent();
             LoadUserData();
         }
 
+        // Загрузка данных пользователя
         private void LoadUserData()
         {
             TxtWelcome.Text = $"Добро пожаловать, {App.CurrentUser?.Username}!";
@@ -25,11 +27,13 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Переход к каталогу цветов
         private void BtnFlowers_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new FlowersCatalogPage());
         }
 
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new FlowersCatalogPage());

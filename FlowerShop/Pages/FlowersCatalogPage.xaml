@@ -31,7 +31,7 @@
         <!-- Контент -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
-                <TextBlock Text="Каталог Цветы" FontSize="48" FontWeight="Bold" Foreground="Black" Margin="0,30,0,40" TextAlignment="Center"/>
+                <TextBlock Text="Каталог" FontSize="48" FontWeight="Bold" Foreground="Black" Margin="0,30,0,40" TextAlignment="Center"/>
 
                 <!-- Панель поиска и фильтра -->
                 <Border Background="White" CornerRadius="15" Padding="25" Width="850" Margin="0,0,0,30">
@@ -45,7 +45,7 @@
 
                         <!-- Поиск -->
                         <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="🔍 Поиск" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBlock Text="Поиск" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
                             <TextBox x:Name="TBoxSearch" 
                      Style="{StaticResource FilterTextBox}"
                      TextChanged="TBoxSearch_TextChanged"/>
@@ -53,7 +53,7 @@
 
                         <!-- Категория -->
                         <StackPanel Grid.Column="1" Margin="10,0,10,0">
-                            <TextBlock Text="🏷️ Категория" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBlock Text="Категория" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
                             <ComboBox x:Name="ComboBoxCategories" 
                                 Style="{StaticResource FilterComboBox}"
                                 SelectionChanged="ComboBoxCategories_SelectionChanged" Width="202">             
@@ -67,7 +67,7 @@
 
                         <!-- Сортировка -->
                         <StackPanel Grid.Column="2" Margin="10,0,10,0">
-                            <TextBlock Text="📊 Сортировка" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBlock Text="Сортировка" FontSize="14" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
                             <ComboBox x:Name="ComboBoxSort" 
                                   Style="{StaticResource FilterComboBox}"
                                   SelectionChanged="ComboBoxSort_SelectionChanged">
@@ -82,7 +82,7 @@
                         <!-- Кнопка сброса -->
                         <StackPanel Grid.Column="3" VerticalAlignment="Bottom" Margin="10,0,0,0">
                             <TextBlock Text=" " FontSize="14" Margin="0,0,0,8"/>
-                            <Button Content="🔄 Сброс" 
+                            <Button Content="Сброс" 
                     Style="{StaticResource ResetButton}" 
                     Click="BtnReset_Click"/>
                         </StackPanel>

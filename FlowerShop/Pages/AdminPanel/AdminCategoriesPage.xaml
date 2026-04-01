@@ -36,13 +36,13 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" 
-                               Text="🏷️ Категории" 
+                               Text="Категории" 
                                FontSize="36" 
                                FontWeight="Bold" 
                                Foreground="Black" 
                                VerticalAlignment="Center"/>
                     <Button Grid.Column="1" 
-                            Content="+ Добавить категорию" 
+                            Content="Добавить категорию" 
                             Style="{StaticResource GreenButton}" 
                             Width="250" 
                             Click="BtnAddCategory_Click"/>
@@ -189,7 +189,7 @@
                     </DataGrid>
                 </Border>
 
-                <!-- 🔹 Пустой результат -->
+                <!-- Пустой результат -->
                 <TextBlock x:Name="TxtNoCategories" 
                            Text="Категории не найдены" 
                            FontSize="24" 

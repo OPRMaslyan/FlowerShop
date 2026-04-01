@@ -10,6 +10,7 @@ namespace FlowerShop.Pages.AdminPanel
     {
         private int? _categoryId;
 
+        // Конструктор страницы
         public AdminCategoryPage(int? categoryId = null)
         {
             InitializeComponent();
@@ -37,7 +38,7 @@ namespace FlowerShop.Pages.AdminPanel
             TBoxName.Focus();
         }
 
-        // Сохранение
+        // Сохранение категории
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             var name = TBoxName.Text.Trim();
@@ -98,7 +99,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Отмена
+        // Отмена и возврат к списку
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminCategoriesPage());
@@ -111,7 +112,7 @@ namespace FlowerShop.Pages.AdminPanel
             TxtError.Visibility = Visibility.Visible;
         }
 
-        // Навигация
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());

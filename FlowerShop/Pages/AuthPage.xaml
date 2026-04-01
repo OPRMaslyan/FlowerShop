@@ -6,23 +6,23 @@
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <!--Логотип -->
+            <!-- Логотип -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
                 <Image Source="/Images/logo.png" Height="60" Margin="0,0,10,0"/>
                 <TextBlock Text="Flower Shop" FontSize="36" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <!--Заголовок -->
+            <!-- Заголовок -->
             <Border Background="White" CornerRadius="20" Padding="30,20" Width="600" Margin="0,0,0,30">
                 <TextBlock Text="Авторизация" FontSize="48" FontWeight="Bold" Foreground="Black" TextAlignment="Center"/>
             </Border>
 
-            <!--Форма входа -->
+            <!-- Форма входа -->
             <Border Background="White" CornerRadius="20" Padding="40" Width="600">
                 <StackPanel>
                     <TextBlock Text="Вход" FontSize="24" FontWeight="Medium" Foreground="Black" TextAlignment="Center" Margin="0,0,0,20"/>
 
-                    <!--Логин -->
+                    <!-- Логин -->
                     <Grid Margin="0,0,0,20">
                         <TextBox x:Name="TBoxLogin" 
                                  Height="60" FontSize="18" Padding="15" 
@@ -45,7 +45,7 @@
                         </TextBlock>
                     </Grid>
 
-                    <!--Пароль -->
+                    <!-- Пароль -->
                     <Grid Margin="0,0,0,20">
                         <PasswordBox x:Name="PBoxPassword" 
                                      Height="60" FontSize="18" Padding="15" 
@@ -59,7 +59,7 @@
                                    IsHitTestVisible="False"/>
                     </Grid>
 
-                    <!--Кнопки -->
+                    <!-- Кнопки -->
                     <Button x:Name="BtnLogin" 
                             Content="Войти" 
                             Click="BtnLogin_Click"
@@ -68,14 +68,14 @@
                             Margin="0,0,0,15"/>
 
                     <Button x:Name="BtnRegister" 
-                            Content="Новый Пользователь" 
+                            Content="Новый пользователь" 
                             Click="BtnRegister_Click"
                             Style="{StaticResource GrayButton}"
                             Width="500"/>
                 </StackPanel>
             </Border>
 
-            <!--Ошибка -->
+            <!-- Ошибка -->
             <TextBlock x:Name="TxtError" 
                        Foreground="Red" 
                        TextAlignment="Center" 

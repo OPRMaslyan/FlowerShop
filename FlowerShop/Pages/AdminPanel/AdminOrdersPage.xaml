@@ -4,33 +4,40 @@
       Title="Управление заказами" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        <!--Верхняя панель -->
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
                     <Image Source="/Images/logo.png" Height="40" Margin="0,0,10,0"/>
-                    <TextBlock Text="Flower Shop Admin" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Flower Shop" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="Каталог" Style="{StaticResource MenuButton}" Click="BtnCatalog_Click" Margin="0,0,20,0"/>
+                    <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click" Margin="0,0,20,0"/>
+                    <Button Content="Меню" Style="{StaticResource MenuButton}" Click="BtnMenu_Click"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
-                    <Button Content="🏠 На главную" Style="{StaticResource MenuButton}" Click="BtnDashboard_Click"/>
+                    <Button Content="🛒" Style="{StaticResource IconButton}" Click="BtnCart_Click" Margin="0,0,10,0"/>
+                    <Button Content="👤" Style="{StaticResource IconButton}" Click="BtnProfile_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!--Контент -->
+        <!-- Контент -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
 
-                <!--Заголовок -->
-                <TextBlock Text="📦 Управление заказами" 
+                <!-- Заголовок -->
+                <TextBlock Text="Управление заказами" 
                            FontSize="36" 
                            FontWeight="Bold" 
                            Foreground="Black" 
                            Margin="0,30,0,30" 
                            TextAlignment="Center"/>
 
-                <!--Список заказов -->
+                <!-- Список заказов -->
                 <Border Background="White" CornerRadius="20" Padding="30" Width="900" Margin="0,0,0,30">
                     <StackPanel>
                         <TextBlock Text="Все заказы" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
@@ -51,7 +58,7 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
-                                            <!--Верхняя строка: Номер, Дата, Клиент, Сумма -->
+                                            <!-- Верхняя строка: Номер, Дата, Клиент, Сумма -->
                                             <Grid Grid.Row="0" Margin="0,0,0,15">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="150"/>
@@ -61,7 +68,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <StackPanel Grid.Column="0">
-                                                    <TextBlock Text="№ Заказа" FontSize="12" Foreground="#757575"/>
+                                                    <TextBlock Text="Номер заказа" FontSize="12" Foreground="#757575"/>
                                                     <TextBlock Text="{Binding Id}" FontSize="18" FontWeight="Bold" Foreground="#212121"/>
                                                 </StackPanel>
 
@@ -91,14 +98,14 @@
                                                 </StackPanel>
                                             </Grid>
 
-                                            <!--Средняя строка: Статус + Товары -->
+                                            <!-- Средняя строка: Статус + Товары -->
                                             <Grid Grid.Row="1" Margin="0,0,0,15">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="250"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <!--Выбор статуса -->
+                                                <!-- Выбор статуса -->
                                                 <StackPanel Grid.Column="0">
                                                     <TextBlock Text="Статус заказа" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
                                                     <ComboBox x:Name="ComboBoxStatus"
@@ -118,7 +125,7 @@
                                                     </ComboBox>
                                                 </StackPanel>
 
-                                                <!--Товары -->
+                                                <!-- Товары -->
                                                 <StackPanel Grid.Column="1" Margin="20,0,0,0">
                                                     <TextBlock Text="Товары" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
                                                     <TextBlock Text="{Binding ItemsList}" 
@@ -128,20 +135,20 @@
                                                 </StackPanel>
                                             </Grid>
 
-                                            <!--Нижняя строка: Кнопки -->
+                                            <!-- Нижняя строка: Кнопки -->
                                             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <Button Content="👁️ Детали" 
+                                                <Button Content="Детали" 
                                                         Style="{StaticResource GrayButton}"
                                                         Width="100" Height="35"
                                                         FontSize="12"
                                                         Margin="0,0,10,0"
                                                         Tag="{Binding Id}"
                                                         Click="BtnDetails_Click"/>
-                                                <Button Content="🗑️ Удалить" 
+                                                <Button Content="🗑️" 
                                                         Background="#DC3545"
-                                                        Style="{StaticResource GrayButton}"
-                                                        Width="100" Height="35"
-                                                        FontSize="12"
+                                                        Style="{StaticResource IconButton}"
+                                                        Width="45" Height="35"
+                                                        FontSize="14"
                                                         Tag="{Binding Id}"
                                                         Click="BtnDelete_Click"/>
                                             </StackPanel>

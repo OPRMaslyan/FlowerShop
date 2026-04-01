@@ -16,6 +16,7 @@ namespace FlowerShop.Pages.AdminPanel
         private byte[] _imageData;
         private bool _imageChanged;
 
+        // Конструктор страницы
         public AdminFlowerPage(int? flowerId = null)
         {
             InitializeComponent();
@@ -133,32 +134,32 @@ namespace FlowerShop.Pages.AdminPanel
             // Валидация
             if (string.IsNullOrWhiteSpace(TBoxName.Text))
             {
-                ShowError("Введите название товара!");
+                ShowError("Введите название товара");
                 TBoxName.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(TBoxDescription.Text))
             {
-                ShowError("Введите описание товара!");
+                ShowError("Введите описание товара");
                 return;
             }
 
             if (!decimal.TryParse(TBoxPrice.Text, out decimal price) || price <= 0)
             {
-                ShowError("Введите корректную цену!");
+                ShowError("Введите корректную цену");
                 return;
             }
 
             if (!int.TryParse(TBoxStock.Text, out int stock) || stock < 0)
             {
-                ShowError("Введите корректное количество!");
+                ShowError("Введите корректное количество");
                 return;
             }
 
             if (ComboBoxCategories.SelectedItem == null)
             {
-                ShowError("Выберите категорию!");
+                ShowError("Выберите категорию");
                 return;
             }
 
@@ -217,13 +218,13 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Отмена
+        // Отмена и возврат к списку
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminFlowersPage());
         }
 
-        // Навигация
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());

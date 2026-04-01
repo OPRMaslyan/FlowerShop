@@ -45,7 +45,7 @@
                         <TextBox x:Name="TBoxDescription" Height="100" FontSize="16" Padding="15" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,0,20" TextWrapping="Wrap" AcceptsReturn="True"/>
 
                         <!-- Цена -->
-                        <TextBlock Text="Цена (₽)" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="Цена (руб.)" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
                         <TextBox x:Name="TBoxPrice" Height="50" FontSize="16" Padding="15" BorderBrush="LightGray" BorderThickness="1" Margin="0,0,0,20" PreviewTextInput="TBoxPrice_PreviewTextInput"/>
 
                         <!-- Количество на складе -->

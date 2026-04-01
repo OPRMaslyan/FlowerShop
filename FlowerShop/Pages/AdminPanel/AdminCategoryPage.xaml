@@ -4,7 +4,7 @@
       Title="Управление категорией" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        <!--Верхняя панель -->
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
@@ -25,7 +25,7 @@
             </Grid>
         </Border>
 
-        <!--Контент -->
+        <!-- Контент -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
 
@@ -43,7 +43,7 @@
                     <StackPanel>
 
                         <!-- Название -->
-                        <TextBlock Text="Название *" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBlock Text="Название" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
                         <TextBox x:Name="TBoxName" 
                                  Height="50" 
                                  FontSize="16" 

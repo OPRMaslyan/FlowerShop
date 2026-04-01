@@ -12,13 +12,14 @@ namespace FlowerShop.Pages.AdminPanel
     {
         private List<CategoryDisplayItem> _allCategories;
 
+        // Конструктор страницы
         public AdminCategoriesPage()
         {
             InitializeComponent();
             LoadCategories();
         }
 
-        // Загрузка категорий из БД
+        // Загрузка категорий из базы данных
         private void LoadCategories()
         {
             using var context = new FlowerShopDbContext();
@@ -39,13 +40,13 @@ namespace FlowerShop.Pages.AdminPanel
             TxtNoCategories.Visibility = _allCategories.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        // Добавить категорию
+        // Переход к добавлению категории
         private void BtnAddCategory_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminCategoryPage());
         }
 
-        // Редактировать категорию
+        // Переход к редактированию категории
         private void BtnEditCategory_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int categoryId)
@@ -54,7 +55,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Удалить категорию
+        // Удаление категории
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int categoryId)
@@ -107,7 +108,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Навигация
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
@@ -115,7 +116,7 @@ namespace FlowerShop.Pages.AdminPanel
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
-    // Вспомогательный класс для отображения категории
+    // Класс для отображения категории в списке
     public class CategoryDisplayItem
     {
         public int Id { get; set; }

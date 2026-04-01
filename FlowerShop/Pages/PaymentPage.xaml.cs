@@ -12,21 +12,24 @@ namespace FlowerShop.Pages
         private decimal _amount;
         private string _paymentMethod;
 
+        // Конструктор страницы
         public PaymentPage(int orderId, decimal amount)
         {
             InitializeComponent();
             _orderId = orderId;
             _amount = amount;
-            _paymentMethod = "QR"; // По умолчанию QR-код
+            _paymentMethod = "QR";
             LoadPaymentInfo();
         }
 
+        // Загрузка информации о платеже
         private void LoadPaymentInfo()
         {
-            TxtOrderInfo.Text = $"📦 Заказ №{_orderId}";
+            TxtOrderInfo.Text = $"Заказ номер {_orderId}";
             TxtAmount.Text = $"{_amount:F2} ₽";
         }
 
+        // Переключение между способами оплаты
         private void PaymentMethod_Checked(object sender, RoutedEventArgs e)
         {
             if (RadioQR.IsChecked == true)
@@ -34,26 +37,27 @@ namespace FlowerShop.Pages
                 QRSection.Visibility = Visibility.Visible;
                 CashSection.Visibility = Visibility.Collapsed;
                 _paymentMethod = "QR";
-                BtnConfirmPayment.Content = "✅ Я оплатил";
-                TxtHint.Text = "Отсканируйте QR-код и нажмите «Я оплатил»";
+                BtnConfirmPayment.Content = "Я оплатил";
+                TxtHint.Text = "Отсканируйте QR-код и нажмите Я оплатил";
             }
             else if (RadioCash.IsChecked == true)
             {
                 QRSection.Visibility = Visibility.Collapsed;
                 CashSection.Visibility = Visibility.Visible;
                 _paymentMethod = "Cash";
-                BtnConfirmPayment.Content = "💵 Подтвердить";
+                BtnConfirmPayment.Content = "Подтвердить";
                 TxtHint.Text = "Оплата будет произведена при получении";
             }
         }
 
+        // Подтверждение оплаты
         private void BtnConfirmPayment_Click(object sender, RoutedEventArgs e)
         {
             if (_paymentMethod == "QR")
             {
                 var result = MessageBox.Show(
-                    "Подтвердите, что вы произвели оплату по QR-коду.\n\n" +
-                    "После подтверждения статус заказа изменится на «Оплачен».",
+                    "Подтвердите, что вы произвели оплату по QR-коду." + Environment.NewLine + Environment.NewLine +
+                    "После подтверждения статус заказа изменится на Оплачен.",
                     "Подтверждение оплаты",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question);
@@ -66,8 +70,8 @@ namespace FlowerShop.Pages
             else if (_paymentMethod == "Cash")
             {
                 var result = MessageBox.Show(
-                    "Вы выбрали оплату при получении.\n\n" +
-                    "Статус заказа будет установлен как «Ожидает оплаты».\n" +
+                    "Вы выбрали оплату при получении." + Environment.NewLine + Environment.NewLine +
+                    "Статус заказа будет установлен как Ожидает оплаты." + Environment.NewLine +
                     "Оплатите заказ курьеру при получении.",
                     "Подтверждение",
                     MessageBoxButton.YesNo,
@@ -80,6 +84,7 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Обновление статуса заказа в базе данных
         private void UpdateOrderStatus(string status)
         {
             try
@@ -93,8 +98,10 @@ namespace FlowerShop.Pages
                     context.SaveChanges();
 
                     string message = _paymentMethod == "QR"
-                        ? "Оплата подтверждена!\n\nСпасибо за покупку. Ваш заказ будет обработан в ближайшее время."
-                        : "Заказ оформлен!\n\nОплатите заказ при получении. Мы свяжемся с вами для уточнения деталей.";
+                        ? "Оплата подтверждена!" + Environment.NewLine + Environment.NewLine +
+                          "Спасибо за покупку. Ваш заказ будет обработан в ближайшее время."
+                        : "Заказ оформлен!" + Environment.NewLine + Environment.NewLine +
+                          "Оплатите заказ при получении. Мы свяжемся с вами для уточнения деталей.";
 
                     string title = _paymentMethod == "QR" ? "Успех" : "Заказ оформлен";
 
@@ -112,10 +119,11 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Отмена оплаты и заказа
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show(
-                "Вы действительно хотите отменить оплату?\n\n" +
+                "Вы действительно хотите отменить оплату?" + Environment.NewLine + Environment.NewLine +
                 "Заказ будет отменён.",
                 "Отмена оплаты",
                 MessageBoxButton.YesNo,
@@ -138,5 +146,12 @@ namespace FlowerShop.Pages
                 NavigationService.Navigate(new ProfilePage());
             }
         }
+
+        // Навигация по меню
+        private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
+        private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
+        private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
+        private void BtnCart_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new CartPage());
+        private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 }

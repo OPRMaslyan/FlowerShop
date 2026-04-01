@@ -4,7 +4,7 @@
       Title="Детали заказа" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        <!--Верхняя панель -->
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
@@ -23,16 +23,16 @@
             </Grid>
         </Border>
 
-        <!--Контент -->
+        <!-- Контент -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
 
-                <!--Заголовок -->
-                <TextBlock Text="📦 Заказ №{OrderNumber}" x:Name="TxtOrderTitle"
+                <!-- Заголовок -->
+                <TextBlock Text="Заказ" x:Name="TxtOrderTitle"
                            FontSize="36" FontWeight="Bold" Foreground="Black" 
                            Margin="0,30,0,30" TextAlignment="Center"/>
 
-                <!--Информация о заказе -->
+                <!-- Информация о заказе -->
                 <Border Background="White" CornerRadius="20" Padding="30" Width="800" Margin="0,0,0,20">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -40,11 +40,11 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="📅 Дата" FontSize="14" Foreground="#555"/>
+                            <TextBlock Text="Дата" FontSize="14" Foreground="#555"/>
                             <TextBlock x:Name="TxtOrderDate" FontSize="18" FontWeight="Bold"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1">
-                            <TextBlock Text="📊 Статус" FontSize="14" Foreground="#555"/>
+                            <TextBlock Text="Статус" FontSize="14" Foreground="#555"/>
                             <Border x:Name="BadgeStatus" CornerRadius="8" Padding="10,5" HorizontalAlignment="Left">
                                 <TextBlock x:Name="TxtStatus" FontSize="16" FontWeight="Bold" Foreground="White"/>
                             </Border>
@@ -52,10 +52,10 @@
                     </Grid>
                 </Border>
 
-                <!--Список товаров -->
+                <!-- Список товаров -->
                 <Border Background="White" CornerRadius="20" Padding="30" Width="800" Margin="0,0,0,20">
                     <StackPanel>
-                        <TextBlock Text="🛍️ Товары" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+                        <TextBlock Text="Товары" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
                         <ItemsControl x:Name="ItemsControlItems">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -97,7 +97,7 @@
                     </StackPanel>
                 </Border>
 
-                <!--Итого -->
+                <!-- Итого -->
                 <Border Background="White" CornerRadius="20" Padding="30" Width="800" Margin="0,0,0,30">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -109,8 +109,8 @@
                     </Grid>
                 </Border>
 
-                <!--Кнопка назад -->
-                <Button Content="← Назад к профилю" Style="{StaticResource GrayButton}" Width="250" Margin="0,0,0,20" Click="BtnBack_Click"/>
+                <!-- Кнопка назад -->
+                <Button Content="Назад к профилю" Style="{StaticResource GrayButton}" Width="250" Margin="0,0,0,20" Click="BtnBack_Click"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
