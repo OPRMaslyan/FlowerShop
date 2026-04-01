@@ -25,7 +25,7 @@ public partial class FlowerShopDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=FlowerShopDB;Username=postgres;Password=111");
+        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=FlowerShopDB;Username=postgres;Password=111"); 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
