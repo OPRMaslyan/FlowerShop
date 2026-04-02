@@ -4,23 +4,23 @@
       Title="Главное меню" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        <!--Верхняя панель -->
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
-                <!--Логотип + Название слева -->
+                <!-- Логотип + Название слева -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
                     <Image Source="/Images/logo.png" Height="40" Margin="0,0,10,0"/>
                     <TextBlock Text="Flower Shop" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <!--Навигация в центре -->
+                <!-- Навигация в центре -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="Каталог" Style="{StaticResource MenuButton}" Click="BtnCatalog_Click" Margin="0,0,20,0"/>
                     <Button Content="О нас" Style="{StaticResource MenuButton}" Click="BtnAbout_Click" Margin="0,0,20,0"/>
                     <Button Content="Меню" Style="{StaticResource MenuButton}" Click="BtnMenu_Click"/>
                 </StackPanel>
 
-                <!--Иконки справа -->
+                <!-- Иконки справа -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,0">
                     <Button Content="🛒" Style="{StaticResource IconButton}" Click="BtnCart_Click" Margin="0,0,10,0"/>
                     <Button Content="👤" Style="{StaticResource IconButton}" Click="BtnProfile_Click"/>
@@ -28,19 +28,19 @@
             </Grid>
         </Border>
 
-        <!--Центральный контент -->
+        <!-- Центральный контент -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,0">
 
             <Border Background="White" CornerRadius="20" Padding="40,30" Width="500" Margin="0,0,0,30">
                 <TextBlock x:Name="TxtAdmin" FontSize="28" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
             </Border>
 
-            <Button Content="📦 Заказы" Style="{StaticResource GreenButton}" Width="250" Click="BtnOrders_Click" Margin="0,0,0,15"/>
-            <Button Content="🌸 Товары" Style="{StaticResource GreenButton}" Width="250" Click="BtnAdminFlowers_Click" Margin="0,0,0,15"/>
-            <Button Content="👥 Пользователи" Style="{StaticResource GreenButton}" Width="250" Click="BtnUsers_Click" Margin="0,0,0,15"/>
-            <Button Content="📁 Категории" Style="{StaticResource GreenButton}" Width="250" Click="BtnCategories_Click" Margin="0,0,0,15"/>
+            <Button Content="Заказы" Style="{StaticResource GreenButton}" Width="250" Click="BtnOrders_Click" Margin="0,0,0,15"/>
+            <Button Content="Товары" Style="{StaticResource GreenButton}" Width="250" Click="BtnAdminFlowers_Click" Margin="0,0,0,15"/>
+            <Button Content="Пользователи" Style="{StaticResource GreenButton}" Width="250" Click="BtnUsers_Click" Margin="0,0,0,15"/>
+            <Button Content="Категории" Style="{StaticResource GreenButton}" Width="250" Click="BtnCategories_Click" Margin="0,0,0,15"/>
 
-            <Button Content="🚪 Выйти" Style="{StaticResource GrayButton}" Width="250" Click="BtnLogout_Click" Margin="0,20,0,0"/>
+            <Button Content="Выйти" Style="{StaticResource GrayButton}" Width="250" Click="BtnLogout_Click" Margin="0,20,0,0"/>
         </StackPanel>
     </Grid>
 </Page>

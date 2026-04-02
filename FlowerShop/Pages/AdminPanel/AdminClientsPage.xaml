@@ -4,8 +4,7 @@
       Title="Управление клиентами" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        
-        <!--Верхняя панель (единая для всех страниц) -->
+        <!-- Верхняя панель -->
         <Border Height="80" Background="White" VerticalAlignment="Top">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0,0,0">
@@ -25,26 +24,26 @@
                 </StackPanel>
             </Grid>
         </Border>
-        
 
-        <!--Контент -->
+        <!-- Контент -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,80,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20">
 
-                <!-- Заголовок + Кнопка добавить -->
+                <!-- Заголовок -->
                 <Grid Width="900" Margin="0,30,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" 
-                               Text="👥 Клиенты" 
+                               Text="Клиенты" 
                                FontSize="36" 
                                FontWeight="Bold" 
                                Foreground="Black" 
                                VerticalAlignment="Center"/>
                 </Grid>
-                <!--Поиск по имени -->
+
+                <!-- Поиск по имени -->
                 <Border Background="White" CornerRadius="15" Padding="20" Width="900" Margin="0,0,0,20">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -83,7 +82,8 @@
                 Click="BtnResetSearch_Click"/>
                     </Grid>
                 </Border>
-                <!--Таблица клиентов (стилизованная) -->
+
+                <!-- Таблица клиентов -->
                 <Border Background="White" 
                         CornerRadius="20" 
                         Padding="25" 
@@ -202,6 +202,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
+
                             <DataGridTemplateColumn Header="Действия" 
                        Width="150">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -215,7 +216,7 @@
                                                 FontSize="18"
                                                 Tag="{Binding Id}"
                                                 Click="BtnDeleteClient_Click"
-                                                ToolTip="Удалить категорию"/>
+                                                ToolTip="Удалить клиента"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

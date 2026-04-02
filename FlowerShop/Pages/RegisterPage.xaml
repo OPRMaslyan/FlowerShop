@@ -4,27 +4,27 @@
       Title="Регистрация" Height="800" Width="1000">
     <Grid Background="{StaticResource MainBackground}">
 
-        <!--Скролл для контента -->
+        <!-- Скролл для контента -->
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,40">
 
-                <!--Логотип -->
+                <!-- Логотип -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
                     <Image Source="/Images/logo.png" Height="60" Margin="0,0,10,0"/>
                     <TextBlock Text="Flower Shop" FontSize="36" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <!--Заголовок -->
+                <!-- Заголовок -->
                 <Border Background="White" CornerRadius="20" Padding="30,20" Width="600" Margin="0,0,0,30">
                     <TextBlock Text="Регистрация" FontSize="48" FontWeight="Bold" Foreground="Black" TextAlignment="Center"/>
                 </Border>
 
-                <!--Форма -->
+                <!-- Форма -->
                 <Border Background="White" CornerRadius="20" Padding="40" Width="600" Margin="0,0,0,20">
                     <StackPanel>
                         <TextBlock Text="Создание аккаунта" FontSize="24" FontWeight="Medium" Foreground="Black" TextAlignment="Center" Margin="0,0,0,20"/>
 
-                        <!--Логин с подсказкой -->
+                        <!-- Логин с подсказкой -->
                         <Grid Margin="0,0,0,20">
                             <TextBox x:Name="TBoxUsername" 
                                      Height="60" FontSize="18" Padding="15" 
@@ -47,7 +47,7 @@
                             </TextBlock>
                         </Grid>
 
-                        <!--Email с подсказкой -->
+                        <!-- Email с подсказкой -->
                         <Grid Margin="0,0,0,20">
                             <TextBox x:Name="TBoxEmail" 
                                      Height="60" FontSize="18" Padding="15" 
@@ -70,7 +70,7 @@
                             </TextBlock>
                         </Grid>
 
-                        <!--Пароль с подсказкой -->
+                        <!-- Пароль с подсказкой -->
                         <Grid Margin="0,0,0,20">
                             <PasswordBox x:Name="PBoxPassword" 
                                          Height="60" FontSize="18" Padding="15" 
@@ -84,7 +84,7 @@
                                        IsHitTestVisible="False"/>
                         </Grid>
 
-                        <!--Подтверждение пароля -->
+                        <!-- Подтверждение пароля -->
                         <Grid Margin="0,0,0,20">
                             <PasswordBox x:Name="PBoxPasswordConfirm" 
                                          Height="60" FontSize="18" Padding="15" 
@@ -98,7 +98,7 @@
                                        IsHitTestVisible="False"/>
                         </Grid>
 
-                        <!--Кнопки -->
+                        <!-- Кнопки -->
                         <Button x:Name="BtnRegister" 
                                 Content="Зарегистрироваться" 
                                 Click="BtnRegister_Click"
@@ -114,7 +114,7 @@
                     </StackPanel>
                 </Border>
 
-                <!--Ошибка -->
+                <!-- Ошибка -->
                 <TextBlock x:Name="TxtError" 
                            Foreground="Red" 
                            TextAlignment="Center" 

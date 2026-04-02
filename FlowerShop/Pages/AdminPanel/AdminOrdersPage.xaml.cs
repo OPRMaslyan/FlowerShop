@@ -12,12 +12,14 @@ namespace FlowerShop.Pages.AdminPanel
     {
         private List<OrderDisplay> _orders;
 
+        // Конструктор страницы
         public AdminOrdersPage()
         {
             InitializeComponent();
             LoadOrders();
         }
 
+        // Загрузка заказов из базы данных
         private void LoadOrders()
         {
             using var context = new FlowerShopDbContext();
@@ -52,7 +54,7 @@ namespace FlowerShop.Pages.AdminPanel
             TxtNoOrders.Visibility = _orders.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        // Устанавливаем выбранный статус при загрузке ComboBox
+        // Установка выбранного статуса при загрузке ComboBox
         private void ComboBoxStatus_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is ComboBox comboBox &&
@@ -70,7 +72,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        // Обработка смены статуса
+        // Обработка смены статуса заказа
         private void ComboBoxStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ComboBox comboBox &&
@@ -107,6 +109,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
+        // Переход к деталям заказа
         private void BtnDetails_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int orderId)
@@ -115,11 +118,12 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
+        // Удаление заказа с каскадным удалением связанных записей
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int orderId)
             {
-                if (MessageBox.Show($"Удалить заказ #{orderId}?", "Подтверждение",
+                if (MessageBox.Show($"Удалить заказ номер {orderId}?", "Подтверждение",
                         MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     try
@@ -128,9 +132,21 @@ namespace FlowerShop.Pages.AdminPanel
                         var order = context.Orders.FirstOrDefault(o => o.Id == orderId);
                         if (order != null)
                         {
-                            context.Orderitems.RemoveRange(context.Orderitems.Where(oi => oi.Orderid == orderId));
+                            // Удаляем позиции заказа
+                            var orderItems = context.Orderitems.Where(oi => oi.Orderid == orderId).ToList();
+                            context.Orderitems.RemoveRange(orderItems);
+
+                            // Удаляем доставку если есть
+                            var delivery = context.Deliveries.FirstOrDefault(d => d.Orderid == orderId);
+                            if (delivery != null)
+                            {
+                                context.Deliveries.Remove(delivery);
+                            }
+
+                            // Удаляем заказ
                             context.Orders.Remove(order);
                             context.SaveChanges();
+
                             MessageBox.Show("Заказ удалён", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                             LoadOrders();
                         }
@@ -143,12 +159,21 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
+        // Навигация на главную админ-панели
         private void BtnDashboard_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminPanelPage());
         }
+
+        // Навигация по меню
+        private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
+        private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
+        private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
+        private void BtnCart_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new CartPage());
+        private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
+    // Класс для отображения заказа в списке
     public class OrderDisplay
     {
         public int Id { get; set; }

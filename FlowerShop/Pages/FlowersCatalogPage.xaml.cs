@@ -15,6 +15,7 @@ namespace FlowerShop.Pages
         private List<FlowerDisplayItem> _allFlowers;
         private List<Category> _allCategories;
 
+        // Конструктор страницы
         public FlowersCatalogPage()
         {
             InitializeComponent();
@@ -47,7 +48,7 @@ namespace FlowerShop.Pages
                 // Загружаем категории для фильтра
                 _allCategories = context.Categories.ToList();
 
-                // Добавляем пункт "Все категории" В НАЧАЛО списка
+                // Добавляем пункт "Все категории" в начало списка
                 _allCategories.Insert(0, new Category { Id = 0, Name = "Все категории" });
                 ComboBoxSort.SelectedIndex = 0;
 
@@ -63,7 +64,7 @@ namespace FlowerShop.Pages
             }
         }
 
-        // Конвертация byte[] → BitmapImage
+        // Конвертация byte[] в BitmapImage
         private BitmapImage ConvertImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0)
@@ -167,7 +168,7 @@ namespace FlowerShop.Pages
             DisplayFlowers(_allFlowers);
         }
 
-        // Навигация
+        // Добавление товара в корзину
         private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
         {
             if (App.CurrentUser == null)
@@ -215,6 +216,7 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
@@ -222,7 +224,7 @@ namespace FlowerShop.Pages
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
-    // Класс для отображения товара
+    // Класс для отображения товара в каталоге
     public class FlowerDisplayItem
     {
         public int Id { get; set; }

@@ -10,16 +10,16 @@ namespace FlowerShop.Pages.AdminPanel
 {
     public partial class AdminClientsPage : Page
     {
-        //Поле для хранения всех клиентов (для фильтрации)
         private List<ClientDisplayItem> _allClients;
 
+        // Конструктор страницы
         public AdminClientsPage()
         {
             InitializeComponent();
             LoadClients();
         }
 
-        //Загрузка клиентов из БД
+        // Загрузка клиентов из базы данных
         private void LoadClients()
         {
             using var context = new FlowerShopDbContext();
@@ -43,7 +43,7 @@ namespace FlowerShop.Pages.AdminPanel
             ApplyFilters();
         }
 
-        //Применение фильтра поиска
+        // Применение фильтра поиска
         private void ApplyFilters()
         {
             var searchText = TBoxSearch?.Text?.Trim().ToLower() ?? "";
@@ -56,13 +56,13 @@ namespace FlowerShop.Pages.AdminPanel
             TxtNoClients.Visibility = filtered.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        //Обработчик поиска
+        // Обработчик изменения текста поиска
         private void TBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             ApplyFilters();
         }
 
-        //Сброс поиска
+        // Сброс поиска
         private void BtnResetSearch_Click(object sender, RoutedEventArgs e)
         {
             TBoxSearch.Clear();
@@ -70,7 +70,7 @@ namespace FlowerShop.Pages.AdminPanel
             TBoxSearch.Focus();
         }
 
-        //Удаление клиента (без изменений)
+        // Удаление клиента с каскадным удалением связанных записей
         private void BtnDeleteClient_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int clientId)
@@ -79,7 +79,7 @@ namespace FlowerShop.Pages.AdminPanel
                 if (client == null) return;
 
                 var result = MessageBox.Show(
-                    $"Удалить клиента \"{client.Username}\"?",
+                    $"Удалить клиента {client.Username}?",
                     "Подтверждение",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
@@ -92,8 +92,33 @@ namespace FlowerShop.Pages.AdminPanel
                         var user = context.Users.Find(clientId);
                         if (user != null)
                         {
+                            // Удаляем отзывы пользователя
+                            var reviews = context.Reviews.Where(r => r.Userid == clientId).ToList();
+                            context.Reviews.RemoveRange(reviews);
+
+                            // Удаляем элементы корзины
+                            var cartItems = context.Cartitems.Where(c => c.Userid == clientId).ToList();
+                            context.Cartitems.RemoveRange(cartItems);
+
+                            // Удаляем заказы пользователя (включая позиции заказов)
+                            var orders = context.Orders.Where(o => o.Userid == clientId).ToList();
+                            foreach (var order in orders)
+                            {
+                                var orderItems = context.Orderitems.Where(oi => oi.Orderid == order.Id).ToList();
+                                context.Orderitems.RemoveRange(orderItems);
+
+                                var delivery = context.Deliveries.FirstOrDefault(d => d.Orderid == order.Id);
+                                if (delivery != null)
+                                {
+                                    context.Deliveries.Remove(delivery);
+                                }
+                            }
+                            context.Orders.RemoveRange(orders);
+
+                            // Удаляем пользователя
                             context.Users.Remove(user);
                             context.SaveChanges();
+
                             LoadClients();
                             MessageBox.Show("Клиент удалён", "Успех",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
@@ -108,7 +133,7 @@ namespace FlowerShop.Pages.AdminPanel
             }
         }
 
-        //Навигация
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
@@ -116,7 +141,7 @@ namespace FlowerShop.Pages.AdminPanel
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
-    // Вспомогательный класс для отображения клиента
+    // Класс для отображения клиента в списке
     public class ClientDisplayItem
     {
         public int Id { get; set; }

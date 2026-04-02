@@ -13,6 +13,7 @@ namespace FlowerShop.Pages
     {
         private int _orderId;
 
+        // Конструктор страницы
         public OrderDetailsPage(int orderId)
         {
             InitializeComponent();
@@ -20,6 +21,7 @@ namespace FlowerShop.Pages
             LoadOrderDetails();
         }
 
+        // Загрузка деталей заказа
         private void LoadOrderDetails()
         {
             using var context = new FlowerShopDbContext();
@@ -33,9 +35,9 @@ namespace FlowerShop.Pages
             }
 
             // Заголовок
-            TxtOrderTitle.Text = $"📦 Заказ №{order.Id}";
+            TxtOrderTitle.Text = $"Заказ номер {order.Id}";
 
-            // 👇 Исправлено для DateTime?
+            // Дата заказа
             TxtOrderDate.Text = order.Orderdate.HasValue
                 ? order.Orderdate.Value.ToString("dd.MM.yyyy HH:mm")
                 : "—";
@@ -45,19 +47,18 @@ namespace FlowerShop.Pages
             TxtStatus.Text = statusText;
             BadgeStatus.Background = statusColor;
 
-            // 👇 Шаг 1: Загружаем товары из БД
+            // Загружаем товары из базы данных
             var itemsFromDb = context.Orderitems
                 .Where(oi => oi.Orderid == _orderId)
                 .Include(oi => oi.Flower)
-                .ToList();  // 👈 Материализуем запрос
+                .ToList();
 
-            // 👇 Шаг 2: Обрабатываем в памяти (null-conditional работает)
+            // Обрабатываем в памяти
             var items = new List<OrderItemDisplay>();
             foreach (var item in itemsFromDb)
             {
                 items.Add(new OrderItemDisplay
                 {
-                    // 👇 Исправлено: обработка в памяти, не в LINQ
                     FlowerName = item.Flower != null ? item.Flower.Name : "Удалён",
                     Price = item.Unitprice,
                     Quantity = item.Quantity,
@@ -69,6 +70,7 @@ namespace FlowerShop.Pages
             TxtTotal.Text = $"{order.Totalamount:F2} ₽";
         }
 
+        // Получение текста и цвета статуса
         private (string, Brush) GetStatus(string status)
         {
             return status switch
@@ -80,7 +82,10 @@ namespace FlowerShop.Pages
             };
         }
 
+        // Возврат к профилю
         private void BtnBack_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
+
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
@@ -88,6 +93,7 @@ namespace FlowerShop.Pages
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
+    // Класс для отображения позиции заказа
     public class OrderItemDisplay
     {
         public string FlowerName { get; set; }

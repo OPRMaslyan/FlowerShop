@@ -36,7 +36,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Все товары" FontSize="36" FontWeight="Bold" Foreground="Black" VerticalAlignment="Center"/>
-                    <Button Grid.Column="1" Content="+ Добавить товар" Style="{StaticResource GreenButton}" Width="200" Click="BtnAddFlower_Click"/>
+                    <Button Grid.Column="1" Content="Добавить товар" Style="{StaticResource GreenButton}" Width="200" Click="BtnAddFlower_Click"/>
                 </Grid>
 
                 <!-- Панель поиска и сортировки -->
@@ -108,14 +108,15 @@
                                         <TextBlock Text="{Binding CategoryName}" Foreground="Gray" Margin="0,5,0,10"/>
 
                                         <!-- Кнопки админа -->
-                                        <Button Content="✏️ Редактировать" Style="{StaticResource GreenButton}" Width="270" Height="40" Margin="0,0,0,10" Click="BtnEdit_Click" Tag="{Binding Id}"/>
-                                        <Button Content="🗑️ Удалить" Style="{StaticResource GrayButton}" Width="270" Height="40" Click="BtnDelete_Click" Tag="{Binding Id}"/>
+                                        <Button Content="✏️" Style="{StaticResource IconButton}" Width="130" Height="40" Margin="0,0,5,10" Click="BtnEdit_Click" Tag="{Binding Id}" ToolTip="Редактировать"/>
+                                        <Button Content="🗑️" Style="{StaticResource IconButton}" Width="130" Height="40" Click="BtnDelete_Click" Tag="{Binding Id}" ToolTip="Удалить"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </WrapPanel>
+
                 <TextBlock x:Name="TxtNoResults" 
                    Text="Ничего не найдено" 
                    FontSize="24" 

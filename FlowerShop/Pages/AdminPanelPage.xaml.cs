@@ -6,38 +6,44 @@ namespace FlowerShop.Pages
 {
     public partial class AdminPanelPage : Page
     {
+        // Конструктор страницы
         public AdminPanelPage()
         {
             InitializeComponent();
             LoadTxtBox();
         }
 
+        // Загрузка текста приветствия
         private void LoadTxtBox()
         {
-            TxtAdmin.Text = $"Админ-панель";
+            TxtAdmin.Text = "Админ-панель";
         }
 
-        // 👇 Новая кнопка: Заказы
+        // Переход к управлению заказами
         private void BtnOrders_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminOrdersPage());
         }
 
+        // Переход к управлению товарами
         private void BtnAdminFlowers_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminFlowersPage());
         }
 
+        // Переход к управлению категориями
         private void BtnCategories_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminCategoriesPage());
         }
 
+        // Переход к управлению пользователями
         private void BtnUsers_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AdminClientsPage());
         }
 
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new FlowersCatalogPage());
@@ -63,6 +69,7 @@ namespace FlowerShop.Pages
             NavigationService.Navigate(new MainMenuPage());
         }
 
+        // Выход из аккаунта
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
             App.CurrentUser = null;

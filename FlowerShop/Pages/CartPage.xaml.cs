@@ -12,12 +12,14 @@ namespace FlowerShop.Pages
     {
         private List<CartItemDisplay> _cartItems;
 
+        // Конструктор страницы
         public CartPage()
         {
             InitializeComponent();
             LoadCart();
         }
 
+        // Загрузка содержимого корзины
         private void LoadCart()
         {
             if (App.CurrentUser == null)
@@ -46,12 +48,14 @@ namespace FlowerShop.Pages
             UpdateTotal();
         }
 
+        // Обновление итоговой суммы
         private void UpdateTotal()
         {
             var total = _cartItems.Sum(i => i.Total);
             TxtTotal.Text = $"{total:F2} ₽";
         }
 
+        // Увеличение количества товара
         private void BtnIncrease_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int cartItemId)
@@ -78,6 +82,7 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Уменьшение количества товара
         private void BtnDecrease_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int cartItemId)
@@ -102,6 +107,7 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Удаление товара из корзины
         private void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int cartItemId)
@@ -123,6 +129,7 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Оформление заказа
         private void BtnCheckout_Click(object sender, RoutedEventArgs e)
         {
             if (_cartItems.Count == 0)
@@ -147,7 +154,7 @@ namespace FlowerShop.Pages
                         Userid = App.CurrentUser.Id,
                         Orderdate = DateTime.Now,
                         Totalamount = total,
-                        Status = "Pending"  // 👈 Статус "Ожидает оплаты"
+                        Status = "Pending"
                     };
 
                     context.Orders.Add(order);
@@ -175,7 +182,6 @@ namespace FlowerShop.Pages
                     context.Cartitems.RemoveRange(cartItems);
                     context.SaveChanges();
 
-                    // 👇 Переход на оплату вместо профиля
                     NavigationService.Navigate(new PaymentPage(order.Id, total));
                 }
                 catch (Exception ex)
@@ -186,6 +192,7 @@ namespace FlowerShop.Pages
             }
         }
 
+        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
@@ -193,6 +200,7 @@ namespace FlowerShop.Pages
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
+    // Класс для отображения товара в корзине
     public class CartItemDisplay
     {
         public int Id { get; set; }
