@@ -69,7 +69,7 @@ namespace FlowerShop.Pages
                 Brush statusColor = order.Status switch
                 {
                     "Pending" => Brushes.Orange,
-                    "Paid" => Brushes.Gray,
+                    "Paid" => Brushes.Blue,
                     "Processing" => Brushes.Orange,
                     "Shipped" => Brushes.Purple,
                     "Delivered" => Brushes.Green,

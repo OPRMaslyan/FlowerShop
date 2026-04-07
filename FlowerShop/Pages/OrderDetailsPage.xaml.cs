@@ -75,9 +75,13 @@ namespace FlowerShop.Pages
         {
             return status switch
             {
-                "Pending" => ("В обработке", Brushes.Orange),
-                "Completed" => ("Выполнен", Brushes.Green),
+                "Pending" => ("Ожидает оплаты", Brushes.Orange),
+                "Paid" => ("Оплачен", Brushes.Blue),
+                "Processing" => ("Обрабатывается", Brushes.Orange),
+                "Shipped" => ("Отправлен", Brushes.Purple),
+                "Delivered" => ("Доставлен", Brushes.Green),
                 "Cancelled" => ("Отменён", Brushes.Red),
+                "Completed" => ("Выполнен", Brushes.Green),
                 _ => (status, Brushes.Gray)
             };
         }
