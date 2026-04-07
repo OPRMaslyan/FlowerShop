@@ -27,12 +27,15 @@ public partial class User
     [StringLength(255)]
     public string Email { get; set; } = null!;
 
-    [Column("role")]
-    [StringLength(50)]
-    public string Role { get; set; } = null!;
+    [Column("roleid")]
+    public int? Roleid { get; set; }
 
     [Column("createdat", TypeName = "timestamp without time zone")]
     public DateTime? Createdat { get; set; }
+
+    [ForeignKey("Roleid")]
+    [InverseProperty("Users")]
+    public virtual Role? Role { get; set; }
 
     [InverseProperty("User")]
     public virtual ICollection<Cartitem> Cartitems { get; set; } = new List<Cartitem>();

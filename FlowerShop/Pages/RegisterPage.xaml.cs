@@ -112,6 +112,14 @@ namespace FlowerShop.Pages
                     return;
                 }
 
+                // Получаем роль Customer по умолчанию
+                var customerRole = context.Roles.FirstOrDefault(r => r.Name == "Customer");
+                if (customerRole == null)
+                {
+                    ShowError("Ошибка: роль не найдена");
+                    return;
+                }
+
                 // Хэширование пароля
                 string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
@@ -120,7 +128,7 @@ namespace FlowerShop.Pages
                     Username = username,
                     Email = email,
                     Passwordhash = passwordHash,
-                    Role = "Customer",
+                    Roleid = customerRole.Id,
                     Createdat = DateTime.Now
                 };
 

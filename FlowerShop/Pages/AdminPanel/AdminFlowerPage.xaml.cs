@@ -165,6 +165,23 @@ namespace FlowerShop.Pages.AdminPanel
 
             try
             {
+                // Отладочная информация
+                System.Diagnostics.Debug.WriteLine("=== НАЧАЛО СОХРАНЕНИЯ ===");
+                System.Diagnostics.Debug.WriteLine($"Name: {TBoxName.Text}");
+                System.Diagnostics.Debug.WriteLine($"Price: {price}");
+                System.Diagnostics.Debug.WriteLine($"Stock: {stock}");
+
+                var selectedCategory = ComboBoxCategories.SelectedItem as Category;
+                if (selectedCategory != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Category Id: {selectedCategory.Id}");
+                    System.Diagnostics.Debug.WriteLine($"Category Name: {selectedCategory.Name}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Category: NULL");
+                }
+
                 using var context = new FlowerShopDbContext();
 
                 if (_flowerId.HasValue)
@@ -177,7 +194,11 @@ namespace FlowerShop.Pages.AdminPanel
                         flower.Description = TBoxDescription.Text.Trim();
                         flower.Price = price;
                         flower.Stockquantity = stock;
-                        flower.Categoryid = ((Category)ComboBoxCategories.SelectedItem).Id;
+
+                        if (selectedCategory != null)
+                        {
+                            flower.Categoryid = selectedCategory.Id;
+                        }
 
                         if (_imageChanged && _imageData != null)
                         {
@@ -185,23 +206,35 @@ namespace FlowerShop.Pages.AdminPanel
                         }
 
                         context.SaveChanges();
+                        System.Diagnostics.Debug.WriteLine("Товар обновлён успешно");
                     }
                 }
                 else
                 {
-                    // Добавление
+                    // Добавление НОВОГО товара
+                    if (selectedCategory == null)
+                    {
+                        ShowError("Категория не выбрана");
+                        return;
+                    }
+
                     var flower = new Flower
                     {
                         Name = TBoxName.Text.Trim(),
                         Description = TBoxDescription.Text.Trim(),
                         Price = price,
                         Stockquantity = stock,
-                        Categoryid = ((Category)ComboBoxCategories.SelectedItem).Id,
+                        Categoryid = selectedCategory.Id,
                         ImageData = _imageData
                     };
 
+                    System.Diagnostics.Debug.WriteLine($"Создаётся товар с CategoryId: {flower.Categoryid}");
+
                     context.Flowers.Add(flower);
                     context.SaveChanges();
+
+                    System.Diagnostics.Debug.WriteLine("Товар добавлен успешно");
+                    System.Diagnostics.Debug.WriteLine($"Новый Id товара: {flower.Id}");
                 }
 
                 MessageBox.Show(
@@ -214,7 +247,32 @@ namespace FlowerShop.Pages.AdminPanel
             }
             catch (Exception ex)
             {
-                ShowError($"Ошибка сохранения: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine("=== ОШИБКА ===");
+                System.Diagnostics.Debug.WriteLine($"Message: {ex.Message}");
+
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Inner: {ex.InnerException.Message}");
+
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Details: {ex.InnerException.InnerException.Message}");
+                    }
+                }
+
+                string errorMessage = $"Ошибка сохранения: {ex.Message}";
+
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\n\nДетали: {ex.InnerException.Message}";
+
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        errorMessage += $"\n\n{ex.InnerException.InnerException.Message}";
+                    }
+                }
+
+                ShowError(errorMessage);
             }
         }
 

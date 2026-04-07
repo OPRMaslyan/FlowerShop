@@ -25,8 +25,9 @@ namespace FlowerShop.Pages.AdminPanel
             using var context = new FlowerShopDbContext();
 
             var users = context.Users
+                .Include(u => u.Role)
                 .Include(u => u.Orders)
-                .Where(u => u.Role == "Customer" || u.Role == "client")
+                .Where(u => u.Role != null && (u.Role.Name == "Customer" || u.Role.Name == "client"))
                 .ToList();
 
             _allClients = users.Select(u => new ClientDisplayItem
