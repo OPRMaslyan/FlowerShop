@@ -17,7 +17,7 @@ namespace FlowerShop.Pages
         {
             TxtWelcome.Text = $"Добро пожаловать, {App.CurrentUser?.Username}!";
 
-            if (App.CurrentUser?.Role == "Admin")
+            if (App.CurrentUser?.Role != null && App.CurrentUser.Role.Name == "Admin")
             {
                 AdminPanel.Visibility = Visibility.Visible;
             }

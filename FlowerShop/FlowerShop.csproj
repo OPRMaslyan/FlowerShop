@@ -21,6 +21,13 @@
 		<None Remove="Images\no_photo.png" />
 		<None Remove="Images\qr_payment.png" />
 		<None Remove="logo.png" />
+		<None Remove="Web\map.html" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Web\map.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -48,9 +55,6 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Images\qr_payment.png" />
-		<None Update="Web\map.html">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 </Project>

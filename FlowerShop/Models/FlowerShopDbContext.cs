@@ -22,10 +22,11 @@ public partial class FlowerShopDbContext : DbContext
     public virtual DbSet<Order> Orders { get; set; }
     public virtual DbSet<Orderitem> Orderitems { get; set; }
     public virtual DbSet<Review> Reviews { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=FlowerShopDB;Username=postgres;Password=111"); 
+        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=FlowerShopDB;Username=postgres;Password=111");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,6 +53,7 @@ public partial class FlowerShopDbContext : DbContext
         modelBuilder.Entity<Flower>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("flowers_pkey");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.HasOne(d => d.Category).WithMany(p => p.Flowers).HasConstraintName("flowers_categoryid_fkey");
         });
 
@@ -78,10 +80,17 @@ public partial class FlowerShopDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Reviews).HasConstraintName("reviews_userid_fkey");
         });
 
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("roles_pkey");
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("users_pkey");
             entity.Property(e => e.Createdat).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.HasOne(d => d.Role).WithMany(p => p.Users).HasConstraintName("users_roleid_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

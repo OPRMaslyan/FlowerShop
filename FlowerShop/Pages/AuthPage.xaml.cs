@@ -1,4 +1,5 @@
 ﻿using FlowerShop.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,7 +47,7 @@ namespace FlowerShop.Pages
             }
 
             using var context = new FlowerShopDbContext();
-            var user = context.Users.FirstOrDefault(u => u.Username == username);
+            var user = context.Users.Include(u => u.Role).FirstOrDefault(u => u.Username == username);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Passwordhash))
             {
@@ -57,7 +58,7 @@ namespace FlowerShop.Pages
 
             App.CurrentUser = user;
 
-            if (user.Role == "Admin" || user.Role == "admin")
+            if (user.Role != null && user.Role.Name == "Admin")
                 NavigationService.Navigate(new AdminPanelPage());
             else
                 NavigationService.Navigate(new MainMenuPage());

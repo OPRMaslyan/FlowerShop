@@ -15,19 +15,16 @@ namespace FlowerShop.Pages
         private List<FlowerDisplayItem> _allFlowers;
         private List<Category> _allCategories;
 
-        // Конструктор страницы
         public FlowersCatalogPage()
         {
             InitializeComponent();
             LoadData();
         }
 
-        // Загрузка данных
         private void LoadData()
         {
             using (var context = new FlowerShopDbContext())
             {
-                // Загружаем все цветы
                 var flowers = context.Flowers.Include(f => f.Category).ToList();
                 _allFlowers = new List<FlowerDisplayItem>();
                 foreach (var flower in flowers)
@@ -45,26 +42,16 @@ namespace FlowerShop.Pages
                     });
                 }
 
-                // Загружаем категории для фильтра
                 _allCategories = context.Categories.ToList();
-
-                // Добавляем пункт "Все категории" в начало списка
                 _allCategories.Insert(0, new Category { Id = 0, Name = "Все категории" });
                 ComboBoxSort.SelectedIndex = 0;
-
-                // Устанавливаем ItemsSource
                 ComboBoxCategories.ItemsSource = _allCategories;
                 ComboBoxCategories.SelectedValuePath = "Id";
-
-                // Выбираем первый элемент
                 ComboBoxCategories.SelectedIndex = 0;
-
-                // Отображаем все товары
                 DisplayFlowers(_allFlowers);
             }
         }
 
-        // Конвертация byte[] в BitmapImage
         private BitmapImage ConvertImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0)
@@ -81,7 +68,6 @@ namespace FlowerShop.Pages
             return bitmap;
         }
 
-        // Отображение товаров
         private void DisplayFlowers(List<FlowerDisplayItem> flowers)
         {
             if (flowers.Count == 0)
@@ -96,70 +82,52 @@ namespace FlowerShop.Pages
             }
         }
 
-        // Поиск по названию
         private void TBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             ApplyFilters();
         }
 
-        // Фильтр по категории
         private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ApplyFilters();
         }
 
-        // Сортировка
         private void ComboBoxSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ApplyFilters();
         }
 
-        // Применение всех фильтров
         private void ApplyFilters()
         {
             var filtered = _allFlowers.AsEnumerable();
 
-            // Поиск
             var searchText = TBoxSearch.Text.Trim().ToLower();
             if (!string.IsNullOrEmpty(searchText))
             {
                 filtered = filtered.Where(f => f.Name.ToLower().Contains(searchText));
             }
 
-            // Категория
             if (ComboBoxCategories.SelectedItem is Category selectedCategory && selectedCategory.Id > 0)
             {
                 filtered = filtered.Where(f => f.CategoryId == selectedCategory.Id);
             }
 
-            // Сортировка
             if (ComboBoxSort.SelectedItem is ComboBoxItem sortItem)
             {
                 var sortTag = sortItem.Tag?.ToString();
-                switch (sortTag)
+                filtered = sortTag switch
                 {
-                    case "price_asc":
-                        filtered = filtered.OrderBy(f => f.Price);
-                        break;
-                    case "price_desc":
-                        filtered = filtered.OrderByDescending(f => f.Price);
-                        break;
-                    case "name_asc":
-                        filtered = filtered.OrderBy(f => f.Name);
-                        break;
-                    case "name_desc":
-                        filtered = filtered.OrderByDescending(f => f.Name);
-                        break;
-                    default:
-                        filtered = filtered.OrderBy(f => f.Id);
-                        break;
-                }
+                    "price_asc" => filtered.OrderBy(f => f.Price),
+                    "price_desc" => filtered.OrderByDescending(f => f.Price),
+                    "name_asc" => filtered.OrderBy(f => f.Name),
+                    "name_desc" => filtered.OrderByDescending(f => f.Name),
+                    _ => filtered.OrderBy(f => f.Id)
+                };
             }
 
             DisplayFlowers(filtered.ToList());
         }
 
-        // Сброс фильтров
         private void BtnReset_Click(object sender, RoutedEventArgs e)
         {
             TBoxSearch.Clear();
@@ -168,7 +136,6 @@ namespace FlowerShop.Pages
             DisplayFlowers(_allFlowers);
         }
 
-        // Добавление товара в корзину
         private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
         {
             if (App.CurrentUser == null)
@@ -181,7 +148,6 @@ namespace FlowerShop.Pages
             if (sender is Button btn && btn.Tag is Flower flower)
             {
                 using var context = new FlowerShopDbContext();
-
                 var existingItem = context.Cartitems
                     .FirstOrDefault(c => c.Userid == App.CurrentUser.Id && c.Flowerid == flower.Id);
 
@@ -216,7 +182,6 @@ namespace FlowerShop.Pages
             }
         }
 
-        // Навигация по меню
         private void BtnCatalog_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new FlowersCatalogPage());
         private void BtnAbout_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new AboutPage());
         private void BtnMenu_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new MainMenuPage());
@@ -224,7 +189,6 @@ namespace FlowerShop.Pages
         private void BtnProfile_Click(object sender, RoutedEventArgs e) => NavigationService.Navigate(new ProfilePage());
     }
 
-    // Класс для отображения товара в каталоге
     public class FlowerDisplayItem
     {
         public int Id { get; set; }

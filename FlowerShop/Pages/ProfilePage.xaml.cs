@@ -34,7 +34,7 @@ namespace FlowerShop.Pages
 
             TBoxUsername.Text = _currentUser.Username;
             TBoxEmail.Text = _currentUser.Email;
-            TBoxRole.Text = _currentUser.Role == "Admin" ? "Администратор" : "Покупатель";
+            TBoxRole.Text = _currentUser.Role?.Name == "Admin" ? "Администратор" : "Покупатель";
 
             TBoxCreatedAt.Text = _currentUser.Createdat.HasValue
                 ? _currentUser.Createdat.Value.ToString("dd.MM.yyyy HH:mm")
